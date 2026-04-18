@@ -424,3 +424,32 @@ function launchWishParticles(canvas, wishText) {
     container.appendChild(el);
   });
 })();
+
+// =========================================
+// Scroll Reveal — fade-in for inner elements
+// =========================================
+(function initScrollReveal() {
+  const revealEls = document.querySelectorAll(
+    '.photo-card, .video-card, .message-card, .section-heading, .section-sub, .wish-description'
+  );
+
+  revealEls.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(28px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  revealEls.forEach(el => observer.observe(el));
+})();
