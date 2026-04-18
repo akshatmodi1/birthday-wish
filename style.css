@@ -516,106 +516,48 @@ h1, h2, h3 {
    Wish Delivery — Fullscreen Overlay
    ========================================= */
 #wish-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  background: #0a0415;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+  position: fixed; inset: 0; z-index: 10000;
+  background: #000008;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.8s ease;
+  overflow: hidden;
 }
-#wish-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-#wish-overlay.fade-out {
-  opacity: 0;
-  visibility: hidden;
+#wish-overlay.w-show  { opacity: 1; visibility: visible; }
+#wish-overlay.w-hide  { opacity: 0; }
+
+#wish-cv {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; display: block;
 }
 
-#wish-stars-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+#wish-msg {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 1.2rem; padding: 2rem;
+  text-align: center; pointer-events: none;
 }
-
-#wish-overlay-content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  padding: 2rem;
-  text-align: center;
-}
-
-#wish-overlay-line1 {
-  font-size: clamp(1.6rem, 5vw, 2.8rem);
-  color: #e1bee7;
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-#wish-overlay-line1.show { opacity: 1; transform: translateY(0); }
-
-/* Comets */
-.wish-comet {
-  width: clamp(180px, 45vw, 320px);
-  position: absolute;
-  opacity: 0;
-}
-#wish-comet-1 {
-  top: 22%;
-  left: -35%;
-  animation: none;
-}
-#wish-comet-2 {
-  top: 48%;
-  left: -35%;
-  animation: none;
-}
-#wish-comet-3 {
-  top: 70%;
-  left: -35%;
-  animation: none;
-}
-.wish-comet.fly {
-  animation: cometFly 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-#wish-comet-2.fly { animation-delay: 0.3s; }
-#wish-comet-3.fly { animation-delay: 0.6s; }
-
-@keyframes cometFly {
-  0%   { left: -35%; opacity: 0; }
-  10%  { opacity: 1; }
-  88%  { opacity: 1; }
-  100% { left: 115%; opacity: 0; }
-}
-
-#wish-overlay-line2 {
-  font-size: clamp(1.8rem, 5.5vw, 3.2rem);
-  color: #f8bbd9;
-  opacity: 0;
-  transform: translateY(20px);
+#wish-msg p {
+  opacity: 0; transform: translateY(22px);
   transition: opacity 1s ease, transform 1s ease;
 }
-#wish-overlay-line2.show { opacity: 1; transform: translateY(0); }
+#wish-msg p.on { opacity: 1; transform: translateY(0); }
 
-#wish-overlay-line3 {
-  font-family: 'Lato', sans-serif;
-  font-size: clamp(1rem, 2.5vw, 1.4rem);
-  color: rgba(255,255,255,0.6);
-  opacity: 0;
-  transition: opacity 1s ease;
-  letter-spacing: 0.04em;
+#wish-t1 {
+  font-size: clamp(1.6rem, 5vw, 2.8rem);
+  color: #e8d5ff;
 }
-#wish-overlay-line3.show { opacity: 1; }
+#wish-t2 {
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  color: #f8bbd9;
+  text-shadow: 0 0 40px rgba(248,187,217,0.8), 0 0 80px rgba(248,187,217,0.4);
+}
+#wish-t3 {
+  font-family: 'Lato', sans-serif;
+  font-size: clamp(0.85rem, 2vw, 1.1rem);
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.15em; text-transform: uppercase;
+}
 
 /* =========================================
    Closing Section

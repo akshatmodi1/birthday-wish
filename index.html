@@ -197,12 +197,11 @@
         Write your wish below and send it into the universe.
       </p>
 
-      <!-- Netlify form — action keeps user on page if JS fails -->
+      <!-- Netlify form — data-netlify registers it; JS handles submission -->
       <form
         id="wish-form"
         name="birthday-wish"
         method="POST"
-        action="/#wish"
         data-netlify="true"
         netlify-honeypot="bot-field"
       >
@@ -219,56 +218,18 @@
           required
         ></textarea>
 
-        <button type="submit" id="wish-submit">Send Wish ✨</button>
+        <button type="button" id="wish-submit">Send Wish ✨</button>
       </form>
     </div>
   </section>
 
-  <!-- Fullscreen wish delivery overlay — shown on form submit -->
-  <div id="wish-overlay" aria-live="polite" aria-hidden="true">
-    <canvas id="wish-stars-canvas"></canvas>
-    <div id="wish-overlay-content">
-      <p id="wish-overlay-line1" class="accent-font">Your wish is on its way…</p>
-      <svg class="wish-comet" id="wish-comet-1" viewBox="0 0 260 40" aria-hidden="true">
-        <defs>
-          <linearGradient id="cometGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0"/>
-            <stop offset="100%" style="stop-color:#f8bbd9;stop-opacity:1"/>
-          </linearGradient>
-        </defs>
-        <line x1="0" y1="20" x2="230" y2="20" stroke="url(#cometGrad1)" stroke-width="2.5"/>
-        <polygon points="248,20 228,13 234,20 228,27" fill="#f8bbd9"/>
-        <circle cx="60"  cy="16" r="2"   fill="#e1bee7" opacity="0.8"/>
-        <circle cx="110" cy="23" r="1.5" fill="#bbdefb" opacity="0.7"/>
-        <circle cx="170" cy="15" r="2.5" fill="#f8bbd9" opacity="0.9"/>
-      </svg>
-      <svg class="wish-comet" id="wish-comet-2" viewBox="0 0 200 40" aria-hidden="true">
-        <defs>
-          <linearGradient id="cometGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0"/>
-            <stop offset="100%" style="stop-color:#ce93d8;stop-opacity:1"/>
-          </linearGradient>
-        </defs>
-        <line x1="0" y1="20" x2="175" y2="20" stroke="url(#cometGrad2)" stroke-width="2"/>
-        <polygon points="190,20 173,14 178,20 173,26" fill="#ce93d8"/>
-        <circle cx="40"  cy="17" r="1.5" fill="#ffffff"  opacity="0.7"/>
-        <circle cx="90"  cy="23" r="2"   fill="#ce93d8"  opacity="0.8"/>
-        <circle cx="140" cy="16" r="1.5" fill="#bbdefb"  opacity="0.6"/>
-      </svg>
-      <svg class="wish-comet" id="wish-comet-3" viewBox="0 0 180 40" aria-hidden="true">
-        <defs>
-          <linearGradient id="cometGrad3" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0"/>
-            <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1"/>
-          </linearGradient>
-        </defs>
-        <line x1="0" y1="20" x2="158" y2="20" stroke="url(#cometGrad3)" stroke-width="1.8"/>
-        <polygon points="172,20 156,14 160,20 156,26" fill="#bbdefb"/>
-        <circle cx="50"  cy="16" r="1.5" fill="#f8bbd9" opacity="0.7"/>
-        <circle cx="110" cy="24" r="2"   fill="#ffffff"  opacity="0.6"/>
-      </svg>
-      <p id="wish-overlay-line2" class="accent-font">Delivered to the Birthday Universe 🌌</p>
-      <p id="wish-overlay-line3">May the stars make it come true ✨</p>
+  <!-- Fullscreen wish delivery overlay -->
+  <div id="wish-overlay" role="dialog" aria-modal="true" aria-label="Wish sent" aria-hidden="true">
+    <canvas id="wish-cv"></canvas>
+    <div id="wish-msg">
+      <p id="wish-t1" class="accent-font">Your wish is on its way… 🌠</p>
+      <p id="wish-t2" class="accent-font">Received by the Universe 🌌</p>
+      <p id="wish-t3">may the stars make it come true ✨</p>
     </div>
   </div>
 

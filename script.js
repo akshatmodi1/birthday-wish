@@ -307,52 +307,219 @@ FX.launchWishParticles = function launchWishParticles(canvas, wishText) {
 }
 
 // =========================================
-// Wish Form — fullscreen overlay + comets
+// Wish Form — Universe Animation
 // =========================================
-(function initWishForm() {
-  const form     = document.getElementById('wish-form');
-  const overlay  = document.getElementById('wish-overlay');
-  const canvas   = document.getElementById('wish-stars-canvas');
-  const line1    = document.getElementById('wish-overlay-line1');
-  const line2    = document.getElementById('wish-overlay-line2');
-  const line3    = document.getElementById('wish-overlay-line3');
-  const comet1   = document.getElementById('wish-comet-1');
-  const comet2   = document.getElementById('wish-comet-2');
-  const comet3   = document.getElementById('wish-comet-3');
+const Wish = (() => {
 
-  // Twinkle stars on the overlay canvas
-  function startStars() {
-    const ctx = canvas.getContext('2d');
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const stars = Array.from({ length: 160 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.6 + 0.3,
-      alpha: Math.random(),
-      speed: Math.random() * 0.012 + 0.004,
-      growing: Math.random() > 0.5
-    }));
-    let raf;
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(s => {
-        s.alpha += s.growing ? s.speed : -s.speed;
-        if (s.alpha >= 1) s.growing = false;
-        if (s.alpha <= 0) s.growing = true;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${s.alpha.toFixed(2)})`;
-        ctx.fill();
-      });
-      raf = requestAnimationFrame(draw);
-    }
-    draw();
-    return () => cancelAnimationFrame(raf);
+  const CFG = {
+    BURST_COUNT : 500,
+    STAR_COUNT  : 350,
+    COMET_COUNT : 7,
+    AURORA_BANDS: 3,
+    DURATION    : 7500,
+    COLORS      : ['#f8bbd9','#ce93d8','#bbdefb','#e1bee7','#ffe0f0','#d4aaff'],
+  };
+
+  let cv, ctx, W, H, raf;
+  let stars=[], bursts=[], comets=[], auroras=[];
+  let t0 = 0;
+
+  const rnd  = (a,b) => a + Math.random()*(b-a);
+  const pick = arr  => arr[Math.floor(Math.random()*arr.length)];
+
+  function mkStar() {
+    return { x:rnd(0,W), y:rnd(0,H), r:rnd(0.3,1.8),
+             a:Math.random(), spd:rnd(0.003,0.015), grow:Math.random()>0.5,
+             col:pick(CFG.COLORS) };
   }
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
+  function mkBurst() {
+    const angle = Math.random()*Math.PI*2;
+    const spd   = rnd(2, 13);
+    return { x:W/2, y:H/2,
+             vx: Math.cos(angle)*spd, vy: Math.sin(angle)*spd,
+             r: rnd(2,5.5), a:1, decay:rnd(0.004,0.012),
+             col:pick(CFG.COLORS), trail:[], maxTrail:14 };
+  }
+
+  function mkComet(i) {
+    const fromTop = Math.random() > 0.5;
+    return {
+      x: fromTop ? rnd(W*0.1, W*0.9) : -80,
+      y: fromTop ? -80 : rnd(H*0.05, H*0.55),
+      dx: fromTop ? rnd(2,5)  : rnd(6,11),
+      dy: fromTop ? rnd(6,10) : rnd(1.5,4),
+      len: rnd(120,240), width:rnd(1.2,2.8),
+      col: pick(CFG.COLORS), a:0, glow:rnd(5,12),
+      delay: 800 + i*350, active:false, done:false
+    };
+  }
+
+  function mkAurora(i) {
+    return {
+      y: H * (0.25 + i*0.22),
+      amp: rnd(30,70), freq: rnd(0.003,0.007),
+      phase: Math.random()*Math.PI*2,
+      spd: rnd(0.004,0.009),
+      col: CFG.COLORS[i % CFG.COLORS.length],
+      alpha: 0
+    };
+  }
+
+  function hexAlpha(hex, a) {
+    const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+    return `rgba(${r},${g},${b},${a.toFixed(3)})`;
+  }
+
+  function draw(ts) {
+    if (!t0) t0 = ts;
+    const elapsed = ts - t0;
+    ctx.clearRect(0,0,W,H);
+
+    // Aurora waves
+    const auroraAlpha = Math.min(1, Math.max(0,(elapsed-600)/1200));
+    auroras.forEach(au => {
+      au.phase += au.spd;
+      au.alpha  = auroraAlpha * 0.18;
+      const grad = ctx.createLinearGradient(0, au.y - au.amp, 0, au.y + au.amp);
+      grad.addColorStop(0,   'rgba(0,0,0,0)');
+      grad.addColorStop(0.5, hexAlpha(au.col, au.alpha));
+      grad.addColorStop(1,   'rgba(0,0,0,0)');
+      ctx.beginPath();
+      ctx.moveTo(0, au.y);
+      for (let x=0; x<=W; x+=4)
+        ctx.lineTo(x, au.y + Math.sin(x*au.freq + au.phase)*au.amp);
+      ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+      ctx.fillStyle = grad; ctx.fill();
+    });
+
+    // Twinkling stars
+    stars.forEach(s => {
+      s.a += s.grow ? s.spd : -s.spd;
+      if (s.a>=1){s.a=1;s.grow=false;}
+      if (s.a<=0){s.a=0;s.grow=true;}
+      if (s.r>1.1){ ctx.shadowColor=s.col; ctx.shadowBlur=6; }
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${s.a.toFixed(3)})`;
+      ctx.fill();
+      ctx.shadowBlur=0;
+    });
+
+    // Burst particles
+    bursts.forEach(b => {
+      if (b.a<=0) return;
+      b.trail.push({x:b.x,y:b.y,a:b.a});
+      if (b.trail.length>b.maxTrail) b.trail.shift();
+      b.trail.forEach((pt,i) => {
+        const ta = pt.a*(i/b.trail.length)*0.4;
+        ctx.beginPath();
+        ctx.arc(pt.x,pt.y,b.r*(i/b.trail.length),0,Math.PI*2);
+        ctx.fillStyle=hexAlpha(b.col,ta); ctx.fill();
+      });
+      ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      ctx.shadowColor=b.col; ctx.shadowBlur=b.r*4;
+      ctx.fillStyle=hexAlpha(b.col,b.a); ctx.fill();
+      ctx.shadowBlur=0;
+      b.x+=b.vx; b.y+=b.vy;
+      b.vx*=0.97; b.vy*=0.97; b.vy+=0.04;
+      b.a-=b.decay;
+    });
+
+    // Comets
+    comets.forEach(c => {
+      if (!c.active||c.done) return;
+      const fadeZone=80;
+      if (c.x<fadeZone&&c.y<fadeZone)            c.a=Math.min(1,c.a+0.07);
+      else if (c.x>W-fadeZone||c.y>H-fadeZone)  c.a=Math.max(0,c.a-0.05);
+      else                                        c.a=Math.min(1,c.a+0.05);
+      c.x+=c.dx; c.y+=c.dy;
+      if (c.x>W+c.len&&c.y>H+c.len){c.done=true;return;}
+      const tx=c.x-c.len*(c.dx/(c.dx+c.dy));
+      const ty=c.y-c.len*(c.dy/(c.dx+c.dy));
+      const g=ctx.createLinearGradient(tx,ty,c.x,c.y);
+      g.addColorStop(0,'rgba(255,255,255,0)');
+      g.addColorStop(0.5,`rgba(255,255,255,${(c.a*0.25).toFixed(3)})`);
+      g.addColorStop(1,  `rgba(255,255,255,${c.a.toFixed(3)})`);
+      ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(c.x,c.y);
+      ctx.strokeStyle=g; ctx.lineWidth=c.width; ctx.lineCap='round'; ctx.stroke();
+      ctx.beginPath(); ctx.arc(c.x,c.y,c.glow*0.45,0,Math.PI*2);
+      ctx.fillStyle=c.col; ctx.shadowColor=c.col; ctx.shadowBlur=c.glow*3;
+      ctx.globalAlpha=c.a*0.95; ctx.fill();
+      ctx.globalAlpha=1; ctx.shadowBlur=0;
+      for(let i=0;i<3;i++){
+        ctx.beginPath();
+        ctx.arc(c.x+rnd(-18,18),c.y+rnd(-18,18),rnd(0.3,1.3),0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,255,255,${rnd(0.1,0.6)*c.a})`; ctx.fill();
+      }
+    });
+
+    raf = requestAnimationFrame(draw);
+  }
+
+  function play() {
+    cv  = document.getElementById('wish-cv');
+    ctx = cv.getContext('2d');
+    W   = cv.width  = window.innerWidth;
+    H   = cv.height = window.innerHeight;
+    t0  = 0;
+
+    // Reset text
+    ['wish-t1','wish-t2','wish-t3'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('on');
+    });
+
+    stars   = Array.from({length:CFG.STAR_COUNT},  mkStar);
+    bursts  = Array.from({length:CFG.BURST_COUNT},  mkBurst);
+    comets  = Array.from({length:CFG.COMET_COUNT},  (_,i)=>mkComet(i));
+    auroras = Array.from({length:CFG.AURORA_BANDS}, (_,i)=>mkAurora(i));
+    comets.forEach(c => setTimeout(()=>{ c.active=true; }, c.delay));
+
+    const ov = document.getElementById('wish-overlay');
+    ov.setAttribute('aria-hidden','false');
+    ov.classList.remove('w-hide');
+    ov.classList.add('w-show');
+    document.body.style.overflow = 'hidden';
+
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(draw);
+
+    // Text sequence
+    [['wish-t1',300],['wish-t2',1900],['wish-t3',3000]].forEach(([id,ms]) => {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('on');
+      }, ms);
+    });
+
+    // Fade out and return to page
+    setTimeout(() => {
+      ov.classList.add('w-hide');
+      cancelAnimationFrame(raf);
+      ov.addEventListener('transitionend', function done() {
+        ov.removeEventListener('transitionend', done);
+        ov.classList.remove('w-show','w-hide');
+        ov.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+      }, { once: true });
+    }, CFG.DURATION);
+  }
+
+  return { play };
+})();
+
+(function initWishForm() {
+  const btn  = document.getElementById('wish-submit');
+  const form = document.getElementById('wish-form');
+  if (!btn || !form) return;
+
+  btn.addEventListener('click', () => {
+    const textarea = document.getElementById('wish-textarea');
+    if (!textarea || !textarea.value.trim()) {
+      if (textarea) textarea.focus();
+      return;
+    }
 
     // POST to Netlify — fire and forget
     fetch(window.location.pathname, {
@@ -361,40 +528,8 @@ FX.launchWishParticles = function launchWishParticles(canvas, wishText) {
       body: new URLSearchParams(new FormData(form)).toString()
     }).catch(() => {});
 
-    // Reset comet animations so they can replay
-    [comet1, comet2, comet3].forEach(c => {
-      c.classList.remove('fly');
-      void c.offsetWidth; // force reflow
-    });
-    [line1, line2, line3].forEach(l => l.classList.remove('show'));
-    overlay.classList.remove('fade-out');
-
-    // Show overlay
-    overlay.setAttribute('aria-hidden', 'false');
-    overlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    const stopStars = startStars();
-
-    // Sequence
-    setTimeout(() => line1.classList.add('show'), 400);
-    setTimeout(() => comet1.classList.add('fly'), 900);
-    setTimeout(() => comet2.classList.add('fly'), 1100);
-    setTimeout(() => comet3.classList.add('fly'), 1300);
-    setTimeout(() => line2.classList.add('show'), 2200);
-    setTimeout(() => line3.classList.add('show'), 2900);
-
-    // Fade out overlay after 4.5s, return to page
-    setTimeout(() => {
-      overlay.classList.add('fade-out');
-      stopStars();
-      setTimeout(() => {
-        overlay.classList.remove('active', 'fade-out');
-        overlay.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-        form.reset();
-      }, 700);
-    }, 4500);
+    Wish.play();
+    form.reset();
   });
 })();
 
