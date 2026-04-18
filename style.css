@@ -15,6 +15,7 @@
   --radius: 1.5rem;
   --shadow: 0 8px 32px rgba(92, 74, 107, 0.12);
   --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --easing: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* =========================================
@@ -57,7 +58,8 @@ h1, h2, h3 {
   opacity: 0;
   visibility: hidden;
   transform: translateY(40px);
-  transition: opacity 0.7s var(--transition), transform 0.7s var(--transition), visibility 0.7s;
+  /* visibility is discrete — snaps at 50% mark, keeping element inaccessible while invisible */
+  transition: opacity 0.7s var(--easing), transform 0.7s var(--easing), visibility 0.7s;
 }
 
 .hidden-section.revealed {
