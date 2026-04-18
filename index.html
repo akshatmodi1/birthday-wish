@@ -39,8 +39,22 @@
     </div>
   </section>
 
-  <!-- SECTION 2: Gift Box -->
-  <section id="gift"></section>
+  <!-- SECTION 2: Gift Box Surprise -->
+  <section id="gift">
+    <p class="accent-font gift-label">I got you a small birthday surprise…</p>
+    <div id="gift-box" role="button" tabindex="0" aria-label="Click to open your birthday surprise">
+      <div id="gift-lid">
+        <div class="ribbon-v"></div>
+      </div>
+      <div id="gift-base">
+        <div class="ribbon-h"></div>
+        <div class="ribbon-v base-ribbon-v"></div>
+      </div>
+    </div>
+    <p class="gift-instruction">Click the gift box to open it 🎁</p>
+    <!-- Confetti canvas (positioned over gift box) -->
+    <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+  </section>
 
   <!-- SECTION 3: Photo Memories (hidden until gift opened) -->
   <section id="photos" class="hidden-section"></section>
