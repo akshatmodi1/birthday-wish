@@ -77,3 +77,120 @@ h1, h2, h3 {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* =========================================
+   Hero Section
+   ========================================= */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--pink), var(--lilac), var(--blue), var(--pink));
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Music toggle */
+#music-toggle {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.2rem;
+  z-index: 1000;
+  background: rgba(255,255,255,0.7);
+  border: none;
+  border-radius: 50%;
+  width: 2.8rem;
+  height: 2.8rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: transform var(--transition), background var(--transition);
+}
+#music-toggle:hover { transform: scale(1.15); background: rgba(255,255,255,0.9); }
+
+/* Sparkle canvas */
+#sparkle-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
+/* Balloons */
+.balloon {
+  position: absolute;
+  bottom: -120px;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  animation: floatUp var(--dur, 8s) ease-in infinite;
+  animation-delay: var(--delay, 0s);
+  user-select: none;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0) rotate(-5deg); opacity: 0.9; }
+  50%  { transform: translateY(-45vh) rotate(5deg); }
+  100% { transform: translateY(-110vh) rotate(-3deg); opacity: 0; }
+}
+
+/* Hero content */
+.hero-content {
+  text-align: center;
+  z-index: 2;
+  padding: 2rem;
+}
+
+.hero-subtitle-top {
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  color: var(--dark);
+  opacity: 0.75;
+  margin-bottom: 0.5rem;
+}
+
+.hero-heading {
+  font-size: clamp(2.8rem, 8vw, 6rem);
+  color: var(--dark);
+  text-shadow: 0 4px 24px rgba(206, 147, 216, 0.3);
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  color: var(--text);
+  opacity: 0.85;
+}
+
+/* Scroll cue */
+.scroll-cue {
+  position: absolute;
+  bottom: 2rem;
+  text-align: center;
+  color: var(--dark);
+  opacity: 0.6;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+.scroll-arrow {
+  font-size: 1.4rem;
+  animation: bounce 2s ease infinite;
+  margin-top: 0.25rem;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
