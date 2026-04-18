@@ -231,7 +231,7 @@ h1, h2, h3 {
   display: flex;
   gap: 1.2rem;
   width: max-content;
-  animation: marquee 60s linear infinite;
+  animation: marquee 120s linear infinite;
 }
 
 /* Pause on hover/touch */
@@ -247,33 +247,71 @@ h1, h2, h3 {
 
 .photo-card {
   flex-shrink: 0;
-  width: clamp(220px, 30vw, 380px);
+  width: clamp(240px, 32vw, 420px);
+  height: clamp(300px, 42vw, 520px);
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
   cursor: pointer;
   background: #1a1020;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.35s ease;
 }
 .photo-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 20px 60px rgba(92, 74, 107, 0.28);
+  transform: scale(1.06);
+  box-shadow: 0 24px 64px rgba(92, 74, 107, 0.38);
 }
 .photo-card img {
   width: 100%;
-  height: 260px;
+  height: 100%;
   object-fit: cover;
+  object-position: center top;
   display: block;
   pointer-events: none;
+  transition: transform 0.5s ease;
+}
+.photo-card:hover img {
+  transform: scale(1.08);
+}
+
+/* Caption overlay — slides up on hover */
+.photo-card-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem 1.2rem 1.2rem;
+  background: linear-gradient(to top, rgba(20, 10, 30, 0.88) 0%, transparent 100%);
+  color: #fff;
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  text-align: center;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.34, 1.2, 0.64, 1),
+              opacity 0.35s ease;
+  pointer-events: none;
+}
+.photo-card:hover .photo-card-caption {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 /* Hide dots — not needed for marquee */
 .carousel-dots { display: none; }
 
 @media (max-width: 600px) {
-  .photo-card { width: clamp(180px, 70vw, 280px); }
-  .photo-card img { height: 200px; }
-  .carousel-track { animation-duration: 40s; }
+  .photo-card {
+    width: clamp(180px, 68vw, 280px);
+    height: clamp(220px, 85vw, 350px);
+  }
+  .carousel-track { animation-duration: 80s; }
+  /* Show captions always on mobile (no hover) */
+  .photo-card-caption {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* =========================================
