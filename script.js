@@ -316,24 +316,19 @@ FX.launchWishParticles = function launchWishParticles(canvas, wishText) {
   const success = document.getElementById('wish-success');
   const wishCanvas = document.getElementById('wish-canvas');
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', e => {
     e.preventDefault();
 
     const wishText = document.getElementById('wish-textarea').value;
-    const formData = new FormData(form);
 
-    // Submit to Netlify in background — silently
-    try {
-      await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData).toString()
-      });
-    } catch (_) {
-      // Silently fail — animation still plays regardless
-    }
+    // Fire-and-forget POST to Netlify — never block the animation on network
+    fetch(window.location.pathname, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString()
+    }).catch(() => {});
 
-    // 1. Hide form
+    // 1. Hide form immediately
     form.style.transition = 'opacity 0.5s ease';
     form.style.opacity = '0';
     setTimeout(() => {
@@ -342,16 +337,12 @@ FX.launchWishParticles = function launchWishParticles(canvas, wishText) {
     }, 500);
 
     // 2. Shooting star
-    setTimeout(() => {
-      star.classList.add('animate');
-    }, 600);
+    setTimeout(() => star.classList.add('animate'), 600);
 
     // 3. Wish character particles
-    setTimeout(() => {
-      FX.launchWishParticles(wishCanvas, wishText);
-    }, 900);
+    setTimeout(() => FX.launchWishParticles(wishCanvas, wishText), 900);
 
-    // 4. Confetti burst — use a temporary canvas so wish particles can finish uninterrupted
+    // 4. Confetti burst
     setTimeout(() => {
       const confettiCanvas = document.createElement('canvas');
       confettiCanvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;';
@@ -359,14 +350,11 @@ FX.launchWishParticles = function launchWishParticles(canvas, wishText) {
       confettiCanvas.width = confettiCanvas.offsetWidth;
       confettiCanvas.height = confettiCanvas.offsetHeight;
       FX.launchConfetti(confettiCanvas, confettiCanvas.width / 2, confettiCanvas.height / 2, 120);
-      // Remove temporary canvas once confetti finishes (~10s max)
       setTimeout(() => confettiCanvas.remove(), 10000);
     }, 1600);
 
     // 5. Success message
-    setTimeout(() => {
-      success.classList.add('visible');
-    }, 2400);
+    setTimeout(() => success.classList.add('visible'), 2400);
   });
 })();
 
