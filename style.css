@@ -68,6 +68,19 @@ h1, h2, h3 {
   transform: translateY(0);
 }
 
+/* Visually hidden but accessible to screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* =========================================
    Reduced motion
    ========================================= */
@@ -505,7 +518,7 @@ h1, h2, h3 {
   font-size: 1.4rem;
   color: var(--accent);
   opacity: 0;
-  transition: opacity 1s ease 0.5s;
+  transition: opacity 1s ease; /* JS controls timing; no CSS delay needed */
 }
 .message-signature.visible { opacity: 1; }
 

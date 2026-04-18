@@ -386,11 +386,16 @@ function launchWishParticles(canvas, wishText) {
       launchWishParticles(wishCanvas, wishText);
     }, 900);
 
-    // 4. Confetti burst (reuses launchConfetti from gift box)
+    // 4. Confetti burst — use a temporary canvas so wish particles can finish uninterrupted
     setTimeout(() => {
-      wishCanvas.width = wishCanvas.offsetWidth;
-      wishCanvas.height = wishCanvas.offsetHeight;
-      launchConfetti(wishCanvas, wishCanvas.width / 2, wishCanvas.height / 2, 120);
+      const confettiCanvas = document.createElement('canvas');
+      confettiCanvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;';
+      animation.appendChild(confettiCanvas);
+      confettiCanvas.width = confettiCanvas.offsetWidth;
+      confettiCanvas.height = confettiCanvas.offsetHeight;
+      launchConfetti(confettiCanvas, confettiCanvas.width / 2, confettiCanvas.height / 2, 120);
+      // Remove temporary canvas once confetti finishes (~10s max)
+      setTimeout(() => confettiCanvas.remove(), 10000);
     }, 1600);
 
     // 5. Success message
