@@ -317,18 +317,19 @@ FX.launchWishParticles = function launchWishParticles(canvas, wishText) {
   const wishCanvas = document.getElementById('wish-canvas');
 
   form.addEventListener('submit', e => {
-    e.preventDefault();
+    e.preventDefault(); // must be first — stops Netlify redirect AND native submit
 
-    const wishText = document.getElementById('wish-textarea').value;
+    const wishText = document.getElementById('wish-textarea').value.trim();
+    if (!wishText) return;
 
-    // Fire-and-forget POST to Netlify — never block the animation on network
+    // POST to Netlify — fire and forget, never block animation
     fetch(window.location.pathname, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(new FormData(form)).toString()
     }).catch(() => {});
 
-    // 1. Hide form immediately
+    // 1. Fade form out immediately
     form.style.transition = 'opacity 0.5s ease';
     form.style.opacity = '0';
     setTimeout(() => {
@@ -344,13 +345,13 @@ FX.launchWishParticles = function launchWishParticles(canvas, wishText) {
 
     // 4. Confetti burst
     setTimeout(() => {
-      const confettiCanvas = document.createElement('canvas');
-      confettiCanvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;';
-      animation.appendChild(confettiCanvas);
-      confettiCanvas.width = confettiCanvas.offsetWidth;
-      confettiCanvas.height = confettiCanvas.offsetHeight;
-      FX.launchConfetti(confettiCanvas, confettiCanvas.width / 2, confettiCanvas.height / 2, 120);
-      setTimeout(() => confettiCanvas.remove(), 10000);
+      const cc = document.createElement('canvas');
+      cc.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;';
+      animation.appendChild(cc);
+      cc.width = cc.offsetWidth;
+      cc.height = cc.offsetHeight;
+      FX.launchConfetti(cc, cc.width / 2, cc.height / 2, 120);
+      setTimeout(() => cc.remove(), 10000);
     }, 1600);
 
     // 5. Success message

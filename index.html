@@ -197,11 +197,12 @@
         Write your wish below and send it into the universe.
       </p>
 
-      <!-- Netlify form — do NOT remove data-netlify or the hidden input -->
+      <!-- Netlify form — action keeps user on page if JS fails -->
       <form
         id="wish-form"
         name="birthday-wish"
         method="POST"
+        action="/#wish"
         data-netlify="true"
         netlify-honeypot="bot-field"
       >
