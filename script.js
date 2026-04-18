@@ -293,3 +293,109 @@ function launchConfetti(canvas, x, y, count = 150) {
 
   observer.observe(msgEl);
 })();
+
+// =========================================
+// Wish Particle Scatter (canvas)
+// =========================================
+function launchWishParticles(canvas, wishText) {
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+
+  // Create character particles from wish text
+  const chars = wishText.slice(0, 40).split('');
+  const particles = chars.map((char, i) => ({
+    char,
+    x: canvas.width / 2 + (Math.random() - 0.5) * 160,
+    y: canvas.height * 0.6,
+    vx: (Math.random() - 0.5) * 3,
+    vy: -(Math.random() * 3 + 2),
+    alpha: 1,
+    size: Math.random() * 8 + 10,
+    color: ['#f8bbd9','#ce93d8','#bbdefb','#e1bee7'][i % 4]
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy -= 0.04;
+      p.alpha -= 0.018;
+      if (p.alpha > 0) {
+        alive = true;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillStyle = p.color;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 10;
+        ctx.font = `${p.size}px Dancing Script, cursive`;
+        ctx.fillText(p.char, p.x, p.y);
+        ctx.restore();
+      }
+    });
+    if (alive) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  draw();
+}
+
+// =========================================
+// Wish Form — AJAX Submit + Animation
+// =========================================
+(function initWishForm() {
+  const form = document.getElementById('wish-form');
+  const animation = document.getElementById('wish-animation');
+  const star = document.getElementById('shooting-star');
+  const success = document.getElementById('wish-success');
+  const wishCanvas = document.getElementById('wish-canvas');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const wishText = document.getElementById('wish-textarea').value;
+    const formData = new FormData(form);
+
+    // Submit to Netlify in background — silently
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      });
+    } catch (_) {
+      // Silently fail — animation still plays regardless
+    }
+
+    // 1. Hide form
+    form.style.transition = 'opacity 0.5s ease';
+    form.style.opacity = '0';
+    setTimeout(() => {
+      form.style.display = 'none';
+      animation.style.display = 'flex';
+    }, 500);
+
+    // 2. Shooting star
+    setTimeout(() => {
+      star.classList.add('animate');
+    }, 600);
+
+    // 3. Wish character particles
+    setTimeout(() => {
+      launchWishParticles(wishCanvas, wishText);
+    }, 900);
+
+    // 4. Confetti burst (reuses launchConfetti from gift box)
+    setTimeout(() => {
+      wishCanvas.width = wishCanvas.offsetWidth;
+      wishCanvas.height = wishCanvas.offsetHeight;
+      launchConfetti(wishCanvas, wishCanvas.width / 2, wishCanvas.height / 2, 120);
+    }, 1600);
+
+    // 5. Success message
+    setTimeout(() => {
+      success.classList.add('visible');
+    }, 2400);
+  });
+})();
