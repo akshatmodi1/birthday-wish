@@ -257,3 +257,39 @@ function launchConfetti(canvas, x, y, count = 150) {
     if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
   });
 })();
+
+// =========================================
+// Birthday Message — Word-by-Word Reveal
+// =========================================
+(function initMessageReveal() {
+  const msgEl = document.getElementById('birthday-message');
+  const sig = document.querySelector('.message-signature');
+
+  // Split into words, wrap each in a span
+  const text = msgEl.textContent.trim();
+  const words = text.split(/\s+/);
+  msgEl.innerHTML = words
+    .map(w => `<span class="message-word">${w}</span>`)
+    .join(' ');
+
+  const wordSpans = msgEl.querySelectorAll('.message-word');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        wordSpans.forEach((span, i) => {
+          setTimeout(() => {
+            span.classList.add('visible');
+          }, i * 60);
+        });
+        // Show signature after all words
+        setTimeout(() => {
+          sig.classList.add('visible');
+        }, wordSpans.length * 60 + 400);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(msgEl);
+})();
