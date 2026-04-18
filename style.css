@@ -703,3 +703,32 @@ h1, h2, h3 {
   inset: 0;
   pointer-events: none;
 }
+
+/* =========================================
+   Mobile Polish
+   ========================================= */
+@media (max-width: 600px) {
+  .hero-heading { letter-spacing: -0.02em; }
+
+  #gift-box #gift-lid { width: 130px; height: 40px; }
+  #gift-box #gift-base { width: 150px; height: 120px; }
+
+  #gift-lid.open { transform: translateY(-85px) rotate(-25deg); }
+
+  .message-card { padding: 1.75rem 1.25rem; }
+
+  .video-grid { flex-direction: column; align-items: center; }
+
+  #wish-form { padding: 0 0.5rem; }
+
+  .closing-finale { font-size: clamp(1.8rem, 10vw, 2.5rem); }
+
+  /* Larger tap targets */
+  #wish-submit { width: 100%; max-width: 320px; padding: 1rem; }
+  #lightbox-close { width: 3rem; height: 3rem; font-size: 1.3rem; }
+}
+
+@media (max-width: 380px) {
+  .hero-heading { font-size: 2.4rem; }
+  .gift-label { font-size: 1.1rem; }
+}
