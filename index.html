@@ -110,118 +110,114 @@
     </div>
   </section>
 
-  <!-- SECTION 4: Video Memories (hidden until gift opened) -->
   <!-- SECTION 4: Video Memories -->
-<section id="videos" class="hidden-section" style="background: linear-gradient(180deg, var(--cream) 0%, var(--lilac) 100%);">
-  <div class="section-container">
-    <h2 class="section-heading">Video Memories 🎬</h2>
-    <p class="section-sub accent-font">moving pictures, moving hearts</p>
+  <section id="videos" class="hidden-section" style="background: linear-gradient(180deg, var(--cream) 0%, var(--lilac) 100%);">
+    <div class="section-container">
+      <h2 class="section-heading">Video Memories 🎬</h2>
+      <p class="section-sub accent-font">moving pictures, moving hearts</p>
 
-    <div class="video-grid">
-      <!-- Replace src and poster with your actual video/image files -->
-      <div class="video-card">
-        <video controls preload="metadata" poster="">
-          <!-- VIDEO -->
-          <source src="videos/video-1.mp4" type="video/mp4" />
-          Your browser does not support video.
-        </video>
-        <p class="video-caption"><!-- CAPTION -->A favourite memory</p>
-      </div>
+      <div class="video-grid">
+        <!-- Replace src and poster with your actual video/image files -->
+        <div class="video-card">
+          <video controls preload="metadata" poster="">
+            <!-- VIDEO -->
+            <source src="videos/video-1.mp4" type="video/mp4" />
+            Your browser does not support video.
+          </video>
+          <p class="video-caption"><!-- CAPTION -->A favourite memory</p>
+        </div>
 
-      <div class="video-card">
-        <video controls preload="metadata" poster="">
-          <!-- VIDEO -->
-          <source src="videos/video-2.mp4" type="video/mp4" />
-          Your browser does not support video.
-        </video>
-        <p class="video-caption"><!-- CAPTION -->Together always</p>
+        <div class="video-card">
+          <video controls preload="metadata" poster="">
+            <!-- VIDEO -->
+            <source src="videos/video-2.mp4" type="video/mp4" />
+            Your browser does not support video.
+          </video>
+          <p class="video-caption"><!-- CAPTION -->Together always</p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-  <!-- SECTION 5: Birthday Message (hidden until gift opened) -->
   <!-- SECTION 5: Birthday Message -->
-<section id="message" class="hidden-section">
-  <div class="section-container">
-    <h2 class="section-heading">A Message for You 💌</h2>
+  <section id="message" class="hidden-section">
+    <div class="section-container">
+      <h2 class="section-heading">A Message for You 💌</h2>
 
-    <div class="message-card">
-      <p class="message-text" id="birthday-message">
-        Some people walk into your life and quietly rearrange it —
-        making everything a little warmer, a little brighter, a little more worth celebrating.
-        Purva, you are that kind of person.
-        Today the universe pauses to celebrate you: your laughter, your light,
-        the way you make ordinary moments feel like something worth remembering.
-        Happy Birthday. May this year be as beautiful as you make everything around you.
-      </p>
-      <p class="message-signature accent-font">— with love ❤️</p>
+      <div class="message-card">
+        <p class="message-text" id="birthday-message">
+          Some people walk into your life and quietly rearrange it —
+          making everything a little warmer, a little brighter, a little more worth celebrating.
+          Purva, you are that kind of person.
+          Today the universe pauses to celebrate you: your laughter, your light,
+          the way you make ordinary moments feel like something worth remembering.
+          Happy Birthday. May this year be as beautiful as you make everything around you.
+        </p>
+        <p class="message-signature accent-font">— with love ❤️</p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-  <!-- SECTION 6: Send a Wish (hidden until gift opened) -->
   <!-- SECTION 6 + 7: Send a Wish + Wish Animation -->
-<section id="wish" class="hidden-section">
-  <div class="section-container">
-    <h2 class="section-heading">Send a Wish to the Birthday Universe ✨</h2>
-    <p class="section-sub accent-font">your words, carried by starlight</p>
+  <section id="wish" class="hidden-section">
+    <div class="section-container">
+      <h2 class="section-heading">Send a Wish to the Birthday Universe ✨</h2>
+      <p class="section-sub accent-font">your words, carried by starlight</p>
 
-    <p class="wish-description">
-      If you could wish for anything today,<br />
-      what would it be?<br />
-      Write your wish below and send it into the universe.
-    </p>
-
-    <!-- Netlify form — do NOT remove data-netlify or the hidden input -->
-    <form
-      id="wish-form"
-      name="birthday-wish"
-      method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
-    >
-      <input type="hidden" name="form-name" value="birthday-wish" />
-      <!-- Honeypot: keep hidden from real users -->
-      <p style="display:none;"><input name="bot-field" /></p>
-
-      <textarea
-        name="wish"
-        id="wish-textarea"
-        placeholder="Close your eyes, breathe, and write your wish…"
-        rows="5"
-        required
-      ></textarea>
-
-      <button type="submit" id="wish-submit">Send Wish ✨</button>
-    </form>
-
-    <!-- Wish animation overlay (hidden until submit) -->
-    <div id="wish-animation" aria-live="polite">
-      <canvas id="wish-canvas" aria-hidden="true"></canvas>
-      <!-- Shooting star SVG -->
-      <svg id="shooting-star" viewBox="0 0 200 60" aria-hidden="true">
-        <defs>
-          <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0" />
-            <stop offset="100%" style="stop-color:#f8bbd9;stop-opacity:1" />
-          </linearGradient>
-        </defs>
-        <line x1="0" y1="30" x2="170" y2="30" stroke="url(#starGrad)" stroke-width="2"/>
-        <polygon points="185,30 170,24 175,30 170,36" fill="#f8bbd9"/>
-        <!-- Sparkle trail dots -->
-        <circle cx="20" cy="26" r="2" fill="#e1bee7" opacity="0.7"/>
-        <circle cx="50" cy="33" r="1.5" fill="#bbdefb" opacity="0.6"/>
-        <circle cx="90" cy="25" r="2.5" fill="#f8bbd9" opacity="0.8"/>
-        <circle cx="130" cy="34" r="1.5" fill="#ffffff" opacity="0.5"/>
-      </svg>
-      <p id="wish-success" class="accent-font">
-        Your wish has been sent to the Birthday Universe 🌌<br />
-        <span>May the stars make it come true.</span>
+      <p class="wish-description">
+        If you could wish for anything today,<br />
+        what would it be?<br />
+        Write your wish below and send it into the universe.
       </p>
+
+      <!-- Netlify form — do NOT remove data-netlify or the hidden input -->
+      <form
+        id="wish-form"
+        name="birthday-wish"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+      >
+        <input type="hidden" name="form-name" value="birthday-wish" />
+        <!-- Honeypot: keep hidden from real users -->
+        <p style="display:none;"><input name="bot-field" /></p>
+
+        <textarea
+          name="wish"
+          id="wish-textarea"
+          placeholder="Close your eyes, breathe, and write your wish…"
+          rows="5"
+          required
+        ></textarea>
+
+        <button type="submit" id="wish-submit">Send Wish ✨</button>
+      </form>
+
+      <!-- Wish animation overlay (hidden until submit) -->
+      <div id="wish-animation" aria-live="polite">
+        <canvas id="wish-canvas" aria-hidden="true"></canvas>
+        <!-- Shooting star SVG -->
+        <svg id="shooting-star" viewBox="0 0 200 60" aria-hidden="true">
+          <defs>
+            <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0" />
+              <stop offset="100%" style="stop-color:#f8bbd9;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="30" x2="170" y2="30" stroke="url(#starGrad)" stroke-width="2"/>
+          <polygon points="185,30 170,24 175,30 170,36" fill="#f8bbd9"/>
+          <circle cx="20" cy="26" r="2" fill="#e1bee7" opacity="0.7"/>
+          <circle cx="50" cy="33" r="1.5" fill="#bbdefb" opacity="0.6"/>
+          <circle cx="90" cy="25" r="2.5" fill="#f8bbd9" opacity="0.8"/>
+          <circle cx="130" cy="34" r="1.5" fill="#ffffff" opacity="0.5"/>
+        </svg>
+        <p id="wish-success" class="accent-font">
+          Your wish has been sent to the Birthday Universe 🌌<br />
+          <span>May the stars make it come true.</span>
+        </p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <!-- SECTION 7: Closing (hidden until gift opened) -->
   <section id="closing" class="hidden-section"></section>
