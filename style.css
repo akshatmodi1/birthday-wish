@@ -19,8 +19,56 @@
 }
 
 /* =========================================
-   Reset
+   Entrance Splash
    ========================================= */
+#enter-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: linear-gradient(135deg, var(--pink), var(--lilac), var(--blue));
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.7s ease;
+}
+#enter-splash.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#enter-splash-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+#enter-title {
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  color: var(--dark);
+  text-shadow: 0 4px 24px rgba(206, 147, 216, 0.4);
+}
+
+#enter-btn {
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, var(--accent), #f48fb1);
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1.2rem;
+  font-family: 'Lato', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 32px rgba(206, 147, 216, 0.5);
+  animation: glowPulse 2s ease infinite;
+  transition: transform 0.2s ease;
+}
+#enter-btn:hover { transform: scale(1.07); }
+#enter-btn:focus-visible { outline: 3px solid var(--dark); outline-offset: 3px; }
+
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;

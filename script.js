@@ -83,47 +83,54 @@ const FX = {};
 })();
 
 // =========================================
+// Entrance Splash + Music Autostart
+// =========================================
+(function initEntranceSplash() {
+  const splash = document.getElementById('enter-splash');
+  const btn    = document.getElementById('enter-btn');
+  const audio  = document.getElementById('bg-music');
+  const toggle = document.getElementById('music-toggle');
+
+  function setToggle(on) {
+    if (!toggle) return;
+    toggle.textContent = on ? '⏸️' : '🎵';
+    toggle.setAttribute('aria-pressed', String(on));
+    toggle.setAttribute('aria-label', on ? 'Pause background music' : 'Play background music');
+  }
+
+  btn.addEventListener('click', () => {
+    // User gesture — browser will allow audio now
+    if (audio) {
+      audio.play().then(() => setToggle(true)).catch(() => setToggle(false));
+    }
+    splash.classList.add('hide');
+    setTimeout(() => splash.remove(), 750);
+  });
+})();
+
+// =========================================
 // Music Toggle
 // =========================================
 (function initMusic() {
-  const btn = document.getElementById('music-toggle');
+  const btn   = document.getElementById('music-toggle');
   const audio = document.getElementById('bg-music');
-  if (!audio) return;
+  if (!audio || !btn) return;
 
-  let playing = false;
-
-  function setPlaying(state) {
-    playing = state;
-    btn.textContent = playing ? '⏸️' : '🎵';
-    btn.setAttribute('aria-pressed', String(playing));
-    btn.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music');
+  function setPlaying(on) {
+    btn.textContent = on ? '⏸️' : '🎵';
+    btn.setAttribute('aria-pressed', String(on));
+    btn.setAttribute('aria-label', on ? 'Pause background music' : 'Play background music');
   }
 
-  // Try autoplay immediately; browsers may block it until user gesture
-  audio.play().then(() => {
-    setPlaying(true);
-  }).catch(() => {
-    // Autoplay blocked — play on first user interaction anywhere on the page
-    setPlaying(false);
-    function startOnInteraction() {
-      audio.play().then(() => setPlaying(true)).catch(() => {});
-      document.removeEventListener('click', startOnInteraction);
-      document.removeEventListener('keydown', startOnInteraction);
-    }
-    document.addEventListener('click', startOnInteraction, { once: true });
-    document.addEventListener('keydown', startOnInteraction, { once: true });
+  audio.addEventListener('play',  () => setPlaying(true));
+  audio.addEventListener('pause', () => setPlaying(false));
+
+  btn.addEventListener('click', () => {
+    if (audio.paused) audio.play().catch(() => {});
+    else audio.pause();
   });
 
-  btn.setAttribute('aria-pressed', 'false');
-  btn.setAttribute('aria-label', 'Play background music');
-  btn.addEventListener('click', () => {
-    if (playing) {
-      audio.pause();
-      setPlaying(false);
-    } else {
-      audio.play().then(() => setPlaying(true)).catch(() => {});
-    }
-  });
+  setPlaying(false);
 })();
 
 
