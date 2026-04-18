@@ -241,7 +241,6 @@ h1, h2, h3 {
   height: 50px;
   background: linear-gradient(135deg, #f48fb1, #ce93d8);
   border-radius: 12px 12px 0 0;
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;

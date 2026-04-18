@@ -215,26 +215,37 @@ function launchConfetti(canvas, x, y, count = 150) {
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const closeBtn = document.getElementById('lightbox-close');
+  let lastFocused = null;
 
-  function openLightbox(src) {
+  function openLightbox(src, triggerEl) {
+    lastFocused = triggerEl || document.activeElement;
     lightboxImg.src = src;
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
+    // Move focus to close button for screen readers + keyboard users
+    setTimeout(() => closeBtn.focus(), 50);
   }
 
   function closeLightbox() {
     lightbox.classList.remove('open');
     document.body.style.overflow = '';
-    // Small delay before clearing src so close animation plays
     setTimeout(() => { lightboxImg.src = ''; }, 300);
+    // Restore focus to the card that opened the lightbox
+    if (lastFocused) lastFocused.focus();
   }
 
   // Click each photo card
   document.querySelectorAll('.photo-card').forEach(card => {
-    card.addEventListener('click', () => {
+    const activate = (e) => {
       const src = card.getAttribute('data-src');
-      // If no real image, show placeholder gradient instead
-      if (src) openLightbox(src);
+      if (src) openLightbox(src, card);
+    };
+    card.addEventListener('click', activate);
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate(e);
+      }
     });
   });
 
