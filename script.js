@@ -89,20 +89,40 @@ const FX = {};
   const btn = document.getElementById('music-toggle');
   const audio = document.getElementById('bg-music');
   if (!audio) return;
+
   let playing = false;
+
+  function setPlaying(state) {
+    playing = state;
+    btn.textContent = playing ? '⏸️' : '🎵';
+    btn.setAttribute('aria-pressed', String(playing));
+    btn.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music');
+  }
+
+  // Try autoplay immediately; browsers may block it until user gesture
+  audio.play().then(() => {
+    setPlaying(true);
+  }).catch(() => {
+    // Autoplay blocked — play on first user interaction anywhere on the page
+    setPlaying(false);
+    function startOnInteraction() {
+      audio.play().then(() => setPlaying(true)).catch(() => {});
+      document.removeEventListener('click', startOnInteraction);
+      document.removeEventListener('keydown', startOnInteraction);
+    }
+    document.addEventListener('click', startOnInteraction, { once: true });
+    document.addEventListener('keydown', startOnInteraction, { once: true });
+  });
+
   btn.setAttribute('aria-pressed', 'false');
   btn.setAttribute('aria-label', 'Play background music');
   btn.addEventListener('click', () => {
     if (playing) {
       audio.pause();
-      btn.textContent = '🎵';
+      setPlaying(false);
     } else {
-      audio.play().catch(() => {}); // ignore autoplay block
-      btn.textContent = '⏸️';
+      audio.play().then(() => setPlaying(true)).catch(() => {});
     }
-    playing = !playing;
-    btn.setAttribute('aria-pressed', String(playing));
-    btn.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music');
   });
 })();
 
@@ -514,22 +534,13 @@ const Wish = (() => {
   const form = document.getElementById('wish-form');
   if (!btn || !form) return;
 
-  btn.addEventListener('click', () => {
+  form.addEventListener('submit', e => {
     const textarea = document.getElementById('wish-textarea');
-    if (!textarea || !textarea.value.trim()) {
-      if (textarea) textarea.focus();
-      return;
-    }
+    if (!textarea || !textarea.value.trim()) return; // let browser validation handle it
 
-    // POST to Netlify — fire and forget
-    fetch(window.location.pathname, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(new FormData(form)).toString()
-    }).catch(() => {});
-
+    // Play animation immediately, then let native form submit proceed
+    // action="/#wish" means Netlify will redirect back to this page after submission
     Wish.play();
-    form.reset();
   });
 })();
 

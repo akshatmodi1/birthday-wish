@@ -197,11 +197,12 @@
         Write your wish below and send it into the universe.
       </p>
 
-      <!-- Netlify form — data-netlify registers it; JS handles submission -->
+      <!-- Netlify form — submits to Netlify then redirects back, no thank-you page -->
       <form
         id="wish-form"
         name="birthday-wish"
         method="POST"
+        action="/#wish"
         data-netlify="true"
         netlify-honeypot="bot-field"
       >
@@ -218,7 +219,7 @@
           required
         ></textarea>
 
-        <button type="button" id="wish-submit">Send Wish ✨</button>
+        <button type="submit" id="wish-submit">Send Wish ✨</button>
       </form>
     </div>
   </section>
