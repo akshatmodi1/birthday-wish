@@ -307,55 +307,94 @@ FX.launchWishParticles = function launchWishParticles(canvas, wishText) {
 }
 
 // =========================================
-// Wish Form — AJAX Submit + Animation
+// Wish Form — fullscreen overlay + comets
 // =========================================
 (function initWishForm() {
-  const form = document.getElementById('wish-form');
-  const animation = document.getElementById('wish-animation');
-  const star = document.getElementById('shooting-star');
-  const success = document.getElementById('wish-success');
-  const wishCanvas = document.getElementById('wish-canvas');
+  const form     = document.getElementById('wish-form');
+  const overlay  = document.getElementById('wish-overlay');
+  const canvas   = document.getElementById('wish-stars-canvas');
+  const line1    = document.getElementById('wish-overlay-line1');
+  const line2    = document.getElementById('wish-overlay-line2');
+  const line3    = document.getElementById('wish-overlay-line3');
+  const comet1   = document.getElementById('wish-comet-1');
+  const comet2   = document.getElementById('wish-comet-2');
+  const comet3   = document.getElementById('wish-comet-3');
+
+  // Twinkle stars on the overlay canvas
+  function startStars() {
+    const ctx = canvas.getContext('2d');
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const stars = Array.from({ length: 160 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.6 + 0.3,
+      alpha: Math.random(),
+      speed: Math.random() * 0.012 + 0.004,
+      growing: Math.random() > 0.5
+    }));
+    let raf;
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => {
+        s.alpha += s.growing ? s.speed : -s.speed;
+        if (s.alpha >= 1) s.growing = false;
+        if (s.alpha <= 0) s.growing = true;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.alpha.toFixed(2)})`;
+        ctx.fill();
+      });
+      raf = requestAnimationFrame(draw);
+    }
+    draw();
+    return () => cancelAnimationFrame(raf);
+  }
 
   form.addEventListener('submit', e => {
-    e.preventDefault(); // must be first — stops Netlify redirect AND native submit
+    e.preventDefault();
 
-    const wishText = document.getElementById('wish-textarea').value.trim();
-    if (!wishText) return;
-
-    // POST to Netlify — fire and forget, never block animation
+    // POST to Netlify — fire and forget
     fetch(window.location.pathname, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(new FormData(form)).toString()
     }).catch(() => {});
 
-    // 1. Fade form out immediately
-    form.style.transition = 'opacity 0.5s ease';
-    form.style.opacity = '0';
+    // Reset comet animations so they can replay
+    [comet1, comet2, comet3].forEach(c => {
+      c.classList.remove('fly');
+      void c.offsetWidth; // force reflow
+    });
+    [line1, line2, line3].forEach(l => l.classList.remove('show'));
+    overlay.classList.remove('fade-out');
+
+    // Show overlay
+    overlay.setAttribute('aria-hidden', 'false');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    const stopStars = startStars();
+
+    // Sequence
+    setTimeout(() => line1.classList.add('show'), 400);
+    setTimeout(() => comet1.classList.add('fly'), 900);
+    setTimeout(() => comet2.classList.add('fly'), 1100);
+    setTimeout(() => comet3.classList.add('fly'), 1300);
+    setTimeout(() => line2.classList.add('show'), 2200);
+    setTimeout(() => line3.classList.add('show'), 2900);
+
+    // Fade out overlay after 4.5s, return to page
     setTimeout(() => {
-      form.style.display = 'none';
-      animation.style.display = 'flex';
-    }, 500);
-
-    // 2. Shooting star
-    setTimeout(() => star.classList.add('animate'), 600);
-
-    // 3. Wish character particles
-    setTimeout(() => FX.launchWishParticles(wishCanvas, wishText), 900);
-
-    // 4. Confetti burst
-    setTimeout(() => {
-      const cc = document.createElement('canvas');
-      cc.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;';
-      animation.appendChild(cc);
-      cc.width = cc.offsetWidth;
-      cc.height = cc.offsetHeight;
-      FX.launchConfetti(cc, cc.width / 2, cc.height / 2, 120);
-      setTimeout(() => cc.remove(), 10000);
-    }, 1600);
-
-    // 5. Success message
-    setTimeout(() => success.classList.add('visible'), 2400);
+      overlay.classList.add('fade-out');
+      stopStars();
+      setTimeout(() => {
+        overlay.classList.remove('active', 'fade-out');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        form.reset();
+      }, 700);
+    }, 4500);
   });
 })();
 
