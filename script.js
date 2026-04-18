@@ -101,3 +101,106 @@
     btn.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music');
   });
 })();
+
+// =========================================
+// Confetti Engine
+// =========================================
+function launchConfetti(canvas, x, y, count = 150) {
+  const ctx = canvas.getContext('2d');
+  const particles = [];
+  const colors = ['#f8bbd9','#e1bee7','#bbdefb','#f48fb1','#ce93d8','#fff176','#ffffff'];
+
+  for (let i = 0; i < count; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 8 + 3;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 4,
+      r: Math.random() * 6 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: 1,
+      gravity: 0.25,
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 8
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    particles.forEach(p => {
+      p.vy += p.gravity;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.alpha -= 0.012;
+      p.rotation += p.rotSpeed;
+      if (p.alpha > 0) {
+        alive = true;
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 0.5);
+        ctx.restore();
+      }
+    });
+    if (alive) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+  draw();
+}
+
+// =========================================
+// Gift Box Interaction
+// =========================================
+(function initGiftBox() {
+  const giftBox = document.getElementById('gift-box');
+  const lid = document.getElementById('gift-lid');
+  const canvas = document.getElementById('confetti-canvas');
+  const hiddenSections = document.querySelectorAll('.hidden-section');
+  let opened = false;
+
+  function openGift() {
+    if (opened) return;
+    opened = true;
+
+    // Update aria state
+    giftBox.setAttribute('aria-pressed', 'true');
+
+    // 1. Animate lid off
+    lid.classList.add('open');
+
+    // 2. Confetti burst from gift center
+    const rect = document.getElementById('gift-base').getBoundingClientRect();
+    const section = document.getElementById('gift');
+    const sectionRect = section.getBoundingClientRect();
+    launchConfetti(
+      canvas,
+      rect.left - sectionRect.left + rect.width / 2,
+      rect.top - sectionRect.top
+    );
+
+    // 3. Reveal hidden sections with staggered delay
+    hiddenSections.forEach((section, i) => {
+      setTimeout(() => {
+        section.classList.add('revealed');
+      }, 400 + i * 200);
+    });
+
+    // 4. Smooth scroll to photos after reveal
+    setTimeout(() => {
+      document.getElementById('photos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 1200);
+  }
+
+  giftBox.setAttribute('aria-pressed', 'false');
+  giftBox.addEventListener('click', openGift);
+  giftBox.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') openGift();
+  });
+})();
