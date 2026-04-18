@@ -1,5 +1,8 @@
 // Birthday Website — script.js
 
+// Shared FX namespace — avoids polluting global scope while letting IIFEs share utilities
+const FX = {};
+
 // =========================================
 // Sparkle Canvas
 // =========================================
@@ -105,7 +108,7 @@
 // =========================================
 // Confetti Engine
 // =========================================
-function launchConfetti(canvas, x, y, count = 150) {
+FX.launchConfetti = function launchConfetti(canvas, x, y, count = 150) {
   const ctx = canvas.getContext('2d');
   const particles = [];
   const colors = ['#f8bbd9','#e1bee7','#bbdefb','#f48fb1','#ce93d8','#fff176','#ffffff'];
@@ -179,7 +182,7 @@ function launchConfetti(canvas, x, y, count = 150) {
     const rect = document.getElementById('gift-base').getBoundingClientRect();
     const section = document.getElementById('gift');
     const sectionRect = section.getBoundingClientRect();
-    launchConfetti(
+    FX.launchConfetti(
       canvas,
       rect.left - sectionRect.left + rect.width / 2,
       rect.top - sectionRect.top
@@ -198,7 +201,6 @@ function launchConfetti(canvas, x, y, count = 150) {
     }, 1400);
   }
 
-  giftBox.setAttribute('aria-pressed', 'false');
   giftBox.addEventListener('click', openGift);
   giftBox.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -297,7 +299,7 @@ function launchConfetti(canvas, x, y, count = 150) {
 // =========================================
 // Wish Particle Scatter (canvas)
 // =========================================
-function launchWishParticles(canvas, wishText) {
+FX.launchWishParticles = function launchWishParticles(canvas, wishText) {
   const ctx = canvas.getContext('2d');
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
@@ -383,7 +385,7 @@ function launchWishParticles(canvas, wishText) {
 
     // 3. Wish character particles
     setTimeout(() => {
-      launchWishParticles(wishCanvas, wishText);
+      FX.launchWishParticles(wishCanvas, wishText);
     }, 900);
 
     // 4. Confetti burst — use a temporary canvas so wish particles can finish uninterrupted
@@ -393,7 +395,7 @@ function launchWishParticles(canvas, wishText) {
       animation.appendChild(confettiCanvas);
       confettiCanvas.width = confettiCanvas.offsetWidth;
       confettiCanvas.height = confettiCanvas.offsetHeight;
-      launchConfetti(confettiCanvas, confettiCanvas.width / 2, confettiCanvas.height / 2, 120);
+      FX.launchConfetti(confettiCanvas, confettiCanvas.width / 2, confettiCanvas.height / 2, 120);
       // Remove temporary canvas once confetti finishes (~10s max)
       setTimeout(() => confettiCanvas.remove(), 10000);
     }, 1600);
@@ -433,15 +435,19 @@ function launchWishParticles(canvas, wishText) {
     '.photo-card, .video-card, .message-card, .section-heading, .section-sub, .wish-description'
   );
 
-  revealEls.forEach(el => {
+  // Build a stable index map so stagger delay uses DOM order, not per-batch observer order
+  const indexMap = new Map();
+  revealEls.forEach((el, i) => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(28px)';
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    indexMap.set(el, i);
   });
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
+        const i = indexMap.get(entry.target) ?? 0;
         setTimeout(() => {
           entry.target.style.opacity = '1';
           entry.target.style.transform = 'translateY(0)';

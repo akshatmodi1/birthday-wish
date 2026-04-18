@@ -14,8 +14,8 @@
   --white:  #ffffff;
   --radius: 1.5rem;
   --shadow: 0 8px 32px rgba(92, 74, 107, 0.12);
-  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  --easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1); /* full shorthand for quick one-liners */
+  --easing: cubic-bezier(0.4, 0, 0.2, 1);           /* curve only — for declarations that need a custom duration */
 }
 
 /* =========================================
