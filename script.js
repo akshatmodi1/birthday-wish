@@ -404,3 +404,23 @@ function launchWishParticles(canvas, wishText) {
     }, 2400);
   });
 })();
+
+// =========================================
+// Floating Hearts (Closing Section)
+// =========================================
+(function initHearts() {
+  const container = document.getElementById('hearts-container');
+  const hearts = ['❤️','🩷','💜','💙','🩵','✨','💫'];
+  const positions = [5, 14, 24, 35, 48, 60, 72, 83, 92];
+
+  positions.forEach((left, i) => {
+    const el = document.createElement('div');
+    el.className = 'floating-heart';
+    el.textContent = hearts[i % hearts.length];
+    el.style.setProperty('--left', left + '%');
+    el.style.setProperty('--dur', (6 + Math.random() * 5) + 's');
+    el.style.setProperty('--delay', (Math.random() * 4) + 's');
+    el.style.setProperty('--size', (1.2 + Math.random() * 1.5) + 'rem');
+    container.appendChild(el);
+  });
+})();
