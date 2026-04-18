@@ -302,3 +302,123 @@ h1, h2, h3 {
   pointer-events: none;
   z-index: 10;
 }
+
+/* =========================================
+   Shared Section Layout
+   ========================================= */
+.section-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem;
+  text-align: center;
+}
+
+.section-heading {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 0.5rem;
+}
+
+.section-sub {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: var(--accent);
+  margin-bottom: 3rem;
+}
+
+/* =========================================
+   Photo Grid
+   ========================================= */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .photo-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .photo-grid { grid-template-columns: 1fr; }
+}
+
+.photo-card {
+  cursor: pointer;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform var(--transition), box-shadow var(--transition);
+  background: var(--white);
+}
+.photo-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 16px 48px rgba(92, 74, 107, 0.18);
+}
+
+.photo-thumb {
+  width: 100%;
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.photo-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-placeholder {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.photo-caption {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: var(--text);
+  text-align: center;
+}
+
+/* =========================================
+   Lightbox
+   ========================================= */
+#lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 15, 40, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+#lightbox.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+#lightbox-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: var(--radius);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+}
+
+#lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+#lightbox-close:hover { background: rgba(255,255,255,0.3); }

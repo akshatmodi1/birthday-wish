@@ -207,3 +207,42 @@ function launchConfetti(canvas, x, y, count = 150) {
     }
   });
 })();
+
+// =========================================
+// Photo Lightbox
+// =========================================
+(function initLightbox() {
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.getElementById('lightbox-close');
+
+  function openLightbox(src) {
+    lightboxImg.src = src;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    // Small delay before clearing src so close animation plays
+    setTimeout(() => { lightboxImg.src = ''; }, 300);
+  }
+
+  // Click each photo card
+  document.querySelectorAll('.photo-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const src = card.getAttribute('data-src');
+      // If no real image, show placeholder gradient instead
+      if (src) openLightbox(src);
+    });
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+  });
+})();

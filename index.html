@@ -56,8 +56,59 @@
     <canvas id="confetti-canvas" aria-hidden="true"></canvas>
   </section>
 
-  <!-- SECTION 3: Photo Memories (hidden until gift opened) -->
-  <section id="photos" class="hidden-section"></section>
+  <!-- SECTION 3: Photo Memories -->
+  <section id="photos" class="hidden-section">
+    <div class="section-container">
+      <h2 class="section-heading">Photo Memories 📸</h2>
+      <p class="section-sub accent-font">moments worth keeping forever</p>
+
+      <div class="photo-grid">
+        <!-- Replace src with your actual images. Edit caption text below each. -->
+        <div class="photo-card" data-src="images/photo-1.jpg">
+          <div class="photo-thumb" style="background: linear-gradient(135deg, var(--pink), var(--lilac));">
+            <span class="photo-placeholder">📷</span>
+          </div>
+          <p class="photo-caption"><!-- CAPTION -->A beautiful memory</p>
+        </div>
+        <div class="photo-card" data-src="images/photo-2.jpg">
+          <div class="photo-thumb" style="background: linear-gradient(135deg, var(--lilac), var(--blue));">
+            <span class="photo-placeholder">📷</span>
+          </div>
+          <p class="photo-caption"><!-- CAPTION -->Smiles all around</p>
+        </div>
+        <div class="photo-card" data-src="images/photo-3.jpg">
+          <div class="photo-thumb" style="background: linear-gradient(135deg, var(--blue), var(--pink));">
+            <span class="photo-placeholder">📷</span>
+          </div>
+          <p class="photo-caption"><!-- CAPTION -->Golden hour</p>
+        </div>
+        <div class="photo-card" data-src="images/photo-4.jpg">
+          <div class="photo-thumb" style="background: linear-gradient(135deg, var(--pink), var(--blue));">
+            <span class="photo-placeholder">📷</span>
+          </div>
+          <p class="photo-caption"><!-- CAPTION -->Just us</p>
+        </div>
+        <div class="photo-card" data-src="images/photo-5.jpg">
+          <div class="photo-thumb" style="background: linear-gradient(135deg, var(--accent), var(--pink));">
+            <span class="photo-placeholder">📷</span>
+          </div>
+          <p class="photo-caption"><!-- CAPTION -->Favourite moments</p>
+        </div>
+        <div class="photo-card" data-src="images/photo-6.jpg">
+          <div class="photo-thumb" style="background: linear-gradient(135deg, var(--lilac), var(--accent));">
+            <span class="photo-placeholder">📷</span>
+          </div>
+          <p class="photo-caption"><!-- CAPTION -->Always and forever</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lightbox overlay -->
+    <div id="lightbox" aria-modal="true" role="dialog" aria-label="Photo lightbox">
+      <button id="lightbox-close" aria-label="Close photo">✕</button>
+      <img id="lightbox-img" src="" alt="Full size photo" />
+    </div>
+  </section>
 
   <!-- SECTION 4: Video Memories (hidden until gift opened) -->
   <section id="videos" class="hidden-section"></section>
