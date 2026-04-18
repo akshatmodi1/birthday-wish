@@ -84,7 +84,10 @@
 (function initMusic() {
   const btn = document.getElementById('music-toggle');
   const audio = document.getElementById('bg-music');
+  if (!audio) return;
   let playing = false;
+  btn.setAttribute('aria-pressed', 'false');
+  btn.setAttribute('aria-label', 'Play background music');
   btn.addEventListener('click', () => {
     if (playing) {
       audio.pause();
@@ -94,5 +97,7 @@
       btn.textContent = '⏸️';
     }
     playing = !playing;
+    btn.setAttribute('aria-pressed', String(playing));
+    btn.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music');
   });
 })();
