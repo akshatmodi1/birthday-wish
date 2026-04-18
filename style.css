@@ -421,3 +421,41 @@ h1, h2, h3 {
   transition: background var(--transition);
 }
 #lightbox-close:hover { background: rgba(255,255,255,0.3); }
+
+/* =========================================
+   Video Section
+   ========================================= */
+.video-grid {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.video-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 480px;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.video-card:hover {
+  box-shadow: 0 12px 40px rgba(206, 147, 216, 0.3);
+  transform: translateY(-4px);
+}
+
+.video-card video {
+  width: 100%;
+  display: block;
+  background: linear-gradient(135deg, var(--pink), var(--lilac));
+  min-height: 200px;
+}
+
+.video-caption {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: var(--text);
+  text-align: center;
+}
