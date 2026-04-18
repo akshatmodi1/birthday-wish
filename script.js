@@ -192,15 +192,18 @@ function launchConfetti(canvas, x, y, count = 150) {
       }, 400 + i * 200);
     });
 
-    // 4. Smooth scroll to photos after reveal
+    // 4. Smooth scroll to photos after all sections have begun revealing
     setTimeout(() => {
-      document.getElementById('photos').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 1200);
+      document.getElementById('photos')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 1400);
   }
 
   giftBox.setAttribute('aria-pressed', 'false');
   giftBox.addEventListener('click', openGift);
   giftBox.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') openGift();
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault(); // prevent Space from scrolling the page
+      openGift();
+    }
   });
 })();
