@@ -51,22 +51,6 @@ h1, h2, h3 {
   font-family: 'Dancing Script', cursive;
 }
 
-/* =========================================
-   Hidden sections — revealed after gift open
-   ========================================= */
-.hidden-section {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(40px);
-  /* visibility is discrete — snaps at 50% mark, keeping element inaccessible while invisible */
-  transition: opacity 0.7s var(--easing), transform 0.7s var(--easing), visibility 0.7s;
-}
-
-.hidden-section.revealed {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
 
 /* Visually hidden but accessible to screen readers */
 .sr-only {
@@ -145,7 +129,7 @@ h1, h2, h3 {
 .balloon {
   position: absolute;
   bottom: -120px;
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(2.2rem, 8vw, 3.5rem);
   animation: floatUp var(--dur, 8s) ease-in infinite;
   animation-delay: var(--delay, 0s);
   user-select: none;
@@ -210,119 +194,12 @@ h1, h2, h3 {
 }
 
 /* =========================================
-   Gift Box Section
-   ========================================= */
-#gift {
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  padding: 4rem 1rem;
-  position: relative;
-  background: linear-gradient(180deg, var(--blue) 0%, var(--cream) 100%);
-}
-
-.gift-label {
-  font-size: clamp(1.3rem, 4vw, 2rem);
-  color: var(--dark);
-  text-align: center;
-}
-
-.gift-instruction {
-  font-size: 1rem;
-  color: var(--text);
-  opacity: 0.7;
-  letter-spacing: 0.05em;
-}
-
-/* Gift box */
-#gift-box {
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform 0.2s;
-  outline: none;
-}
-#gift-box:hover { transform: scale(1.05); }
-#gift-box:focus-visible { outline: 3px solid var(--accent); border-radius: 4px; }
-
-#gift-lid {
-  position: relative; /* anchors z-index and transform-origin for open animation */
-  width: 180px;
-  height: 50px;
-  background: linear-gradient(135deg, #f48fb1, #ce93d8);
-  border-radius: 12px 12px 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 16px rgba(206,147,216,0.35);
-  transform-origin: top center;
-  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
-              opacity 0.5s ease;
-  z-index: 2;
-}
-
-#gift-lid.open {
-  transform: translateY(-110px) rotate(-25deg);
-  opacity: 0;
-}
-
-#gift-lid .ribbon-v {
-  position: absolute;
-  width: 28px;
-  height: 100%;
-  background: rgba(255,255,255,0.45);
-  border-radius: 4px;
-}
-
-#gift-base {
-  width: 200px;
-  height: 160px;
-  background: linear-gradient(135deg, #f06292, #ba68c8);
-  border-radius: 0 0 20px 20px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(206,147,216,0.4);
-}
-
-#gift-base .ribbon-h {
-  position: absolute;
-  top: 50%;
-  left: 0; right: 0;
-  height: 28px;
-  background: rgba(255,255,255,0.35);
-  transform: translateY(-50%);
-}
-
-#gift-base .base-ribbon-v {
-  position: absolute;
-  top: 0; bottom: 0;
-  left: 50%;
-  width: 28px;
-  background: rgba(255,255,255,0.35);
-  transform: translateX(-50%);
-}
-
-/* Confetti canvas */
-#confetti-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* =========================================
    Shared Section Layout
    ========================================= */
 .section-container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 5rem 1.5rem;
+  padding: 5rem 1.5rem 2rem;
   text-align: center;
 }
 
@@ -338,63 +215,65 @@ h1, h2, h3 {
 }
 
 /* =========================================
-   Photo Grid
+   Photo Strip — CSS marquee, infinite scroll
    ========================================= */
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 1rem 0 2.5rem;
+  /* Fade edges */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
 }
 
-@media (max-width: 768px) {
-  .photo-grid { grid-template-columns: repeat(2, 1fr); }
+.carousel-track {
+  display: flex;
+  gap: 1.2rem;
+  width: max-content;
+  animation: marquee 60s linear infinite;
 }
-@media (max-width: 480px) {
-  .photo-grid { grid-template-columns: 1fr; }
+
+/* Pause on hover/touch */
+.carousel-track:hover,
+.carousel-track.paused {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .photo-card {
-  cursor: pointer;
+  flex-shrink: 0;
+  width: clamp(220px, 30vw, 380px);
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
-  transition: transform var(--transition), box-shadow var(--transition);
-  background: var(--white);
+  cursor: pointer;
+  background: #1a1020;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .photo-card:hover {
   transform: scale(1.03);
-  box-shadow: 0 16px 48px rgba(92, 74, 107, 0.18);
+  box-shadow: 0 20px 60px rgba(92, 74, 107, 0.28);
 }
-.photo-card:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 3px;
-}
-
-.photo-thumb {
+.photo-card img {
   width: 100%;
-  aspect-ratio: 4/3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.photo-thumb img {
-  width: 100%;
-  height: 100%;
+  height: 260px;
   object-fit: cover;
+  display: block;
+  pointer-events: none;
 }
 
-.photo-placeholder {
-  font-size: 3rem;
-  opacity: 0.5;
-}
+/* Hide dots — not needed for marquee */
+.carousel-dots { display: none; }
 
-.photo-caption {
-  padding: 0.75rem 1rem;
-  font-size: 0.9rem;
-  color: var(--text);
-  text-align: center;
+@media (max-width: 600px) {
+  .photo-card { width: clamp(180px, 70vw, 280px); }
+  .photo-card img { height: 200px; }
+  .carousel-track { animation-duration: 40s; }
 }
 
 /* =========================================
@@ -445,10 +324,15 @@ h1, h2, h3 {
    Video Section
    ========================================= */
 .video-grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .video-grid { grid-template-columns: 1fr; }
 }
 
 .video-card {
@@ -457,7 +341,6 @@ h1, h2, h3 {
   overflow: hidden;
   box-shadow: var(--shadow);
   width: 100%;
-  max-width: 480px;
   transition: box-shadow var(--transition), transform var(--transition);
 }
 .video-card:hover {
@@ -717,16 +600,9 @@ h1, h2, h3 {
 @media (max-width: 600px) {
   .hero-heading { letter-spacing: -0.02em; }
 
-  #gift-box #gift-lid { width: 130px; height: 40px; }
-  #gift-box #gift-base { width: 150px; height: 120px; }
-
-  #gift-lid.open { transform: translateY(-85px) rotate(-25deg); }
-
   .message-card { padding: 1.75rem 1.25rem; }
 
-  .video-grid { flex-direction: column; align-items: center; }
-
-  #wish-form { padding: 0 0.5rem; }
+#wish-form { padding: 0 0.5rem; }
 
   .closing-finale { font-size: clamp(1.8rem, 10vw, 2.5rem); }
 

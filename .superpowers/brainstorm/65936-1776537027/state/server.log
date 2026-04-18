@@ -1,0 +1,8 @@
+{"type":"server-started","port":58555,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:58555","screen_dir":"/Users/C5398729/Desktop/birthday-wish/.superpowers/brainstorm/65936-1776537027/content","state_dir":"/Users/C5398729/Desktop/birthday-wish/.superpowers/brainstorm/65936-1776537027/state"}
+{"type":"screen-added","file":"/Users/C5398729/Desktop/birthday-wish/.superpowers/brainstorm/65936-1776537027/content/color-mood.html"}
+{"source":"user-event","type":"click","text":"🌸✨\n    \n      Dreamy Pastels\n      Soft pinks, lilac, powder blue. Feels like a fairytale. Romantic & ethereal.","choice":"dreamy","id":null,"timestamp":1776537073544}
+{"type":"screen-updated","file":"/Users/C5398729/Desktop/birthday-wish/.superpowers/brainstorm/65936-1776537027/content/color-mood.html"}
+{"source":"user-event","type":"click","text":"🌸✨\n    \n      Dreamy Pastels\n      Soft pinks, lilac, powder blue. Feels like a fairytale. Romantic & ethereal.","choice":"dreamy","id":null,"timestamp":1776537087205}
+{"type":"screen-added","file":"/Users/C5398729/Desktop/birthday-wish/.superpowers/brainstorm/65936-1776537027/content/waiting-1.html"}
+{"type":"screen-updated","file":"/Users/C5398729/Desktop/birthday-wish/.superpowers/brainstorm/65936-1776537027/content/waiting-1.html"}
+{"type":"server-stopped","reason":"idle timeout"}

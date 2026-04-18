@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body { margin: 0; background: #fef6fb; }
+.wrapper { overflow: hidden; width: 100%; }
+.track { display: flex; gap: 24px; width: max-content; transition: transform 0.5s ease; }
+.track.no-t { transition: none; }
+.card { flex-shrink:0; width: min(85vw,700px); height: min(64vw,525px); background: pink; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:3rem; font-family:sans-serif; }
+.dots { display:flex; justify-content:center; gap:8px; margin-top:16px; }
+.dot { width:10px; height:10px; border-radius:50%; background:#e1bee7; border:none; cursor:pointer; }
+.dot.active { background:#ce93d8; transform:scale(1.4); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="track" id="track">
+    <div class="card">1</div><div class="card">2</div><div class="card">3</div>
+    <div class="card">4</div><div class="card">5</div>
+  </div>
+</div>
+<div class="dots" id="dots"></div>
+<script>
+const track = document.getElementById('track');
+const dotsEl = document.getElementById('dots');
+const cards = Array.from(track.children);
+const total = cards.length;
+let current = 0, timer = null;
+
+const dots = cards.map((_, i) => {
+  const d = document.createElement('button');
+  d.className = 'dot' + (i===0?' active':'');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+  return d;
+});
+
+function cardW() { return cards[0].getBoundingClientRect().width + 24; }
+
+function goTo(i, smooth=true) {
+  current = ((i%total)+total)%total;
+  if(!smooth){ track.classList.add('no-t'); }
+  track.style.transform = `translateX(-${current*cardW()}px)`;
+  if(!smooth){ track.offsetHeight; track.classList.remove('no-t'); }
+  dots.forEach((d,j) => d.classList.toggle('active', j===current));
+}
+
+function startAuto() {
+  clearInterval(timer);
+  timer = setInterval(() => goTo(current+1), 2000);
+}
+
+setTimeout(startAuto, 200);
+window.addEventListener('resize', () => goTo(current, false));
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Birthday Purva 🎂</title>
+  <title>Happy Birthday Manu 🎂</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,79 +28,96 @@
     <!-- Hero content -->
     <div class="hero-content">
       <p class="accent-font hero-subtitle-top">today is your day ✨</p>
-      <h1 class="hero-heading">Happy Birthday<br />Purva 🎂</h1>
+      <h1 class="hero-heading">Happy Birthday<br />Manu 🎂</h1>
       <p class="accent-font hero-subtitle">"A little corner of the internet made just for you."</p>
     </div>
 
     <!-- Scroll cue -->
     <div class="scroll-cue">
-      <span>scroll down</span>
+      <span>scroll down for a surprise 🎁</span>
       <div class="scroll-arrow">↓</div>
     </div>
   </section>
 
-  <!-- SECTION 2: Gift Box Surprise -->
-  <section id="gift">
-    <p class="accent-font gift-label">I got you a small birthday surprise…</p>
-    <div id="gift-box" role="button" tabindex="0" aria-pressed="false" aria-label="Click to open your birthday surprise">
-      <div id="gift-lid">
-        <div class="ribbon-v"></div>
-      </div>
-      <div id="gift-base">
-        <div class="ribbon-h"></div>
-        <div class="ribbon-v base-ribbon-v"></div>
-      </div>
-    </div>
-    <p class="gift-instruction">Click the gift box to open it 🎁</p>
-    <!-- Confetti canvas (positioned over gift box) -->
-    <canvas id="confetti-canvas" aria-hidden="true"></canvas>
-  </section>
-
-  <!-- SECTION 3: Photo Memories -->
-  <section id="photos" class="hidden-section">
-    <div class="section-container">
+  <!-- SECTION 2: Photo Memories -->
+  <section id="photos">
+    <div class="section-container section-inner">
       <h2 class="section-heading">Photo Memories 📸</h2>
       <p class="section-sub accent-font">moments worth keeping forever</p>
+    </div>
 
-      <div class="photo-grid">
-        <!-- Replace src with your actual images. Edit caption text below each. -->
-        <div class="photo-card" data-src="images/photo-1.jpg" tabindex="0" role="button" aria-label="Open photo: A beautiful memory">
-          <div class="photo-thumb" style="background: linear-gradient(135deg, var(--pink), var(--lilac));">
-            <span class="photo-placeholder">📷</span>
-          </div>
-          <p class="photo-caption"><!-- CAPTION -->A beautiful memory</p>
-        </div>
-        <div class="photo-card" data-src="images/photo-2.jpg" tabindex="0" role="button" aria-label="Open photo: Smiles all around">
-          <div class="photo-thumb" style="background: linear-gradient(135deg, var(--lilac), var(--blue));">
-            <span class="photo-placeholder">📷</span>
-          </div>
-          <p class="photo-caption"><!-- CAPTION -->Smiles all around</p>
-        </div>
-        <div class="photo-card" data-src="images/photo-3.jpg" tabindex="0" role="button" aria-label="Open photo: Golden hour">
-          <div class="photo-thumb" style="background: linear-gradient(135deg, var(--blue), var(--pink));">
-            <span class="photo-placeholder">📷</span>
-          </div>
-          <p class="photo-caption"><!-- CAPTION -->Golden hour</p>
-        </div>
-        <div class="photo-card" data-src="images/photo-4.jpg" tabindex="0" role="button" aria-label="Open photo: Just us">
-          <div class="photo-thumb" style="background: linear-gradient(135deg, var(--pink), var(--blue));">
-            <span class="photo-placeholder">📷</span>
-          </div>
-          <p class="photo-caption"><!-- CAPTION -->Just us</p>
-        </div>
-        <div class="photo-card" data-src="images/photo-5.jpg" tabindex="0" role="button" aria-label="Open photo: Favourite moments">
-          <div class="photo-thumb" style="background: linear-gradient(135deg, var(--accent), var(--pink));">
-            <span class="photo-placeholder">📷</span>
-          </div>
-          <p class="photo-caption"><!-- CAPTION -->Favourite moments</p>
-        </div>
-        <div class="photo-card" data-src="images/photo-6.jpg" tabindex="0" role="button" aria-label="Open photo: Always and forever">
-          <div class="photo-thumb" style="background: linear-gradient(135deg, var(--lilac), var(--accent));">
-            <span class="photo-placeholder">📷</span>
-          </div>
-          <p class="photo-caption"><!-- CAPTION -->Always and forever</p>
-        </div>
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="carousel-track">
+        <!-- original set -->
+        <div class="photo-card" data-src="images/1images-1.jpg"><img src="images/1images-1.jpg" alt="Memory 1"></div>
+        <div class="photo-card" data-src="images/2images-01.jpg"><img src="images/2images-01.jpg" alt="Memory 2"></div>
+        <div class="photo-card" data-src="images/3images-4.jpg"><img src="images/3images-4.jpg" alt="Memory 3"></div>
+        <div class="photo-card" data-src="images/4images-1.png"><img src="images/4images-1.png" alt="Memory 4"></div>
+        <div class="photo-card" data-src="images/4images-5.jpg"><img src="images/4images-5.jpg" alt="Memory 5"></div>
+        <div class="photo-card" data-src="images/5images-1.jpg"><img src="images/5images-1.jpg" alt="Memory 6"></div>
+        <div class="photo-card" data-src="images/5images-2.jpg"><img src="images/5images-2.jpg" alt="Memory 7"></div>
+        <div class="photo-card" data-src="images/5images-3.jpg"><img src="images/5images-3.jpg" alt="Memory 8"></div>
+        <div class="photo-card" data-src="images/5images-4.jpg"><img src="images/5images-4.jpg" alt="Memory 9"></div>
+        <div class="photo-card" data-src="images/5images-5.jpg"><img src="images/5images-5.jpg" alt="Memory 10"></div>
+        <div class="photo-card" data-src="images/6images-6.jpg"><img src="images/6images-6.jpg" alt="Memory 11"></div>
+        <div class="photo-card" data-src="images/6images-8.jpg"><img src="images/6images-8.jpg" alt="Memory 12"></div>
+        <div class="photo-card" data-src="images/7images-7.jpg"><img src="images/7images-7.jpg" alt="Memory 13"></div>
+        <div class="photo-card" data-src="images/8images-10.jpg"><img src="images/8images-10.jpg" alt="Memory 14"></div>
+        <div class="photo-card" data-src="images/9images-13.jpg"><img src="images/9images-13.jpg" alt="Memory 15"></div>
+        <div class="photo-card" data-src="images/10images.jpg"><img src="images/10images.jpg" alt="Memory 16"></div>
+        <div class="photo-card" data-src="images/11images-2.jpg"><img src="images/11images-2.jpg" alt="Memory 17"></div>
+        <div class="photo-card" data-src="images/12images-16.jpg"><img src="images/12images-16.jpg" alt="Memory 18"></div>
+        <div class="photo-card" data-src="images/13images-8.jpg"><img src="images/13images-8.jpg" alt="Memory 19"></div>
+        <div class="photo-card" data-src="images/14images-9.jpg"><img src="images/14images-9.jpg" alt="Memory 20"></div>
+        <div class="photo-card" data-src="images/14photo-21.jpg"><img src="images/14photo-21.jpg" alt="Memory 21"></div>
+        <div class="photo-card" data-src="images/14photo-31.jpg"><img src="images/14photo-31.jpg" alt="Memory 22"></div>
+        <div class="photo-card" data-src="images/15images-11.jpg"><img src="images/15images-11.jpg" alt="Memory 23"></div>
+        <div class="photo-card" data-src="images/15photo-22.jpg"><img src="images/15photo-22.jpg" alt="Memory 24"></div>
+        <div class="photo-card" data-src="images/16images-12.jpg"><img src="images/16images-12.jpg" alt="Memory 25"></div>
+        <div class="photo-card" data-src="images/17images-14.jpg"><img src="images/17images-14.jpg" alt="Memory 26"></div>
+        <div class="photo-card" data-src="images/18images-15.jpg"><img src="images/18images-15.jpg" alt="Memory 27"></div>
+        <div class="photo-card" data-src="images/19photo-14.jpg"><img src="images/19photo-14.jpg" alt="Memory 28"></div>
+        <div class="photo-card" data-src="images/photo-3.jpg"><img src="images/photo-3.jpg" alt="Memory 29"></div>
+        <div class="photo-card" data-src="images/photo-11.jpg"><img src="images/photo-11.jpg" alt="Memory 30"></div>
+        <div class="photo-card" data-src="images/photo-15.jpg"><img src="images/photo-15.jpg" alt="Memory 31"></div>
+        <div class="photo-card" data-src="images/photo-23.jpg"><img src="images/photo-23.jpg" alt="Memory 32"></div>
+        <div class="photo-card" data-src="images/Screenshot_2024-06-10-22-54-51-932_com.snapchat.android.jpg"><img src="images/Screenshot_2024-06-10-22-54-51-932_com.snapchat.android.jpg" alt="Memory 33"></div>
+        <!-- duplicate set — makes translateX(-50%) loop seamless -->
+        <div class="photo-card" aria-hidden="true" data-src="images/1images-1.jpg"><img src="images/1images-1.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/2images-01.jpg"><img src="images/2images-01.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/3images-4.jpg"><img src="images/3images-4.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/4images-1.png"><img src="images/4images-1.png" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/4images-5.jpg"><img src="images/4images-5.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/5images-1.jpg"><img src="images/5images-1.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/5images-2.jpg"><img src="images/5images-2.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/5images-3.jpg"><img src="images/5images-3.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/5images-4.jpg"><img src="images/5images-4.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/5images-5.jpg"><img src="images/5images-5.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/6images-6.jpg"><img src="images/6images-6.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/6images-8.jpg"><img src="images/6images-8.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/7images-7.jpg"><img src="images/7images-7.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/8images-10.jpg"><img src="images/8images-10.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/9images-13.jpg"><img src="images/9images-13.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/10images.jpg"><img src="images/10images.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/11images-2.jpg"><img src="images/11images-2.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/12images-16.jpg"><img src="images/12images-16.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/13images-8.jpg"><img src="images/13images-8.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/14images-9.jpg"><img src="images/14images-9.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/14photo-21.jpg"><img src="images/14photo-21.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/14photo-31.jpg"><img src="images/14photo-31.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/15images-11.jpg"><img src="images/15images-11.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/15photo-22.jpg"><img src="images/15photo-22.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/16images-12.jpg"><img src="images/16images-12.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/17images-14.jpg"><img src="images/17images-14.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/18images-15.jpg"><img src="images/18images-15.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/19photo-14.jpg"><img src="images/19photo-14.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/photo-3.jpg"><img src="images/photo-3.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/photo-11.jpg"><img src="images/photo-11.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/photo-15.jpg"><img src="images/photo-15.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/photo-23.jpg"><img src="images/photo-23.jpg" alt=""></div>
+        <div class="photo-card" aria-hidden="true" data-src="images/Screenshot_2024-06-10-22-54-51-932_com.snapchat.android.jpg"><img src="images/Screenshot_2024-06-10-22-54-51-932_com.snapchat.android.jpg" alt=""></div>
       </div>
+      <div class="carousel-dots" id="carousel-dots"></div>
     </div>
 
     <!-- Lightbox overlay -->
@@ -111,44 +128,54 @@
   </section>
 
   <!-- SECTION 4: Video Memories -->
-  <section id="videos" class="hidden-section" style="background: linear-gradient(180deg, var(--cream) 0%, var(--lilac) 100%);">
-    <div class="section-container">
+  <section id="videos" style="background: linear-gradient(180deg, var(--cream) 0%, var(--lilac) 100%);">
+    <div class="section-container section-inner">
       <h2 class="section-heading">Video Memories 🎬</h2>
       <p class="section-sub accent-font">moving pictures, moving hearts</p>
 
       <div class="video-grid">
-        <!-- Replace src and poster with your actual video/image files -->
         <div class="video-card">
-          <video controls preload="metadata" poster="">
-            <!-- VIDEO -->
-            <source src="videos/video-1.mp4" type="video/mp4" />
+          <video controls preload="metadata">
+            <source src="videos/baap_re_cute.mp4" type="video/mp4" />
             Your browser does not support video.
           </video>
-          <p class="video-caption"><!-- CAPTION -->A favourite memory</p>
+          <p class="video-caption">baap re cute 😍</p>
         </div>
-
         <div class="video-card">
-          <video controls preload="metadata" poster="">
-            <!-- VIDEO -->
-            <source src="videos/video-2.mp4" type="video/mp4" />
+          <video controls preload="metadata">
+            <source src="videos/malika_arora_walk.mp4" type="video/mp4" />
             Your browser does not support video.
           </video>
-          <p class="video-caption"><!-- CAPTION -->Together always</p>
+          <p class="video-caption">malika arora walk 💃</p>
+        </div>
+        <div class="video-card">
+          <video controls preload="metadata">
+            <source src="videos/phela_pyaar_janu.mp4" type="video/mp4" />
+            Your browser does not support video.
+          </video>
+          <p class="video-caption">phela pyaar janu 🥰</p>
+        </div>
+        <div class="video-card">
+          <video controls preload="metadata">
+            <source src="videos/sundar_manu.mp4" type="video/mp4" />
+            Your browser does not support video.
+          </video>
+          <p class="video-caption">sundar manu ✨</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- SECTION 5: Birthday Message -->
-  <section id="message" class="hidden-section">
-    <div class="section-container">
+  <section id="message">
+    <div class="section-container section-inner">
       <h2 class="section-heading">A Message for You 💌</h2>
 
       <div class="message-card">
         <p class="message-text" id="birthday-message">
           Some people walk into your life and quietly rearrange it —
           making everything a little warmer, a little brighter, a little more worth celebrating.
-          Purva, you are that kind of person.
+          Manu, you are that kind of person.
           Today the universe pauses to celebrate you: your laughter, your light,
           the way you make ordinary moments feel like something worth remembering.
           Happy Birthday. May this year be as beautiful as you make everything around you.
@@ -159,8 +186,8 @@
   </section>
 
   <!-- SECTION 6 + 7: Send a Wish + Wish Animation -->
-  <section id="wish" class="hidden-section">
-    <div class="section-container">
+  <section id="wish">
+    <div class="section-container section-inner">
       <h2 class="section-heading">Send a Wish to the Birthday Universe ✨</h2>
       <p class="section-sub accent-font">your words, carried by starlight</p>
 
@@ -221,11 +248,11 @@
   </section>
 
   <!-- SECTION 7: Closing -->
-  <section id="closing" class="hidden-section">
+  <section id="closing">
     <!-- Floating hearts (JS will inject these) -->
     <div id="hearts-container"></div>
 
-    <div class="section-container closing-content">
+    <div class="section-container closing-content section-inner">
       <p class="closing-text">
         Some people make the world brighter<br />just by being in it.
       </p>

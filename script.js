@@ -68,15 +68,16 @@ const FX = {};
 // =========================================
 (function initBalloons() {
   const container = document.getElementById('balloons');
-  const emojis = ['🎈','🎈','🎈','🎀','🎊','🎉'];
-  const positions = [5, 15, 28, 42, 58, 72, 85, 93];
+  const emojis = ['🎈','🎉','🎊','🎀','🥳','✨','🌸','🎂','🍰','💫','🌟','🎁','🦋','🌈','💝'];
+  const positions = [3, 10, 18, 26, 34, 42, 50, 58, 66, 74, 82, 90, 95];
   positions.forEach((left, i) => {
     const el = document.createElement('div');
     el.className = 'balloon';
     el.textContent = emojis[i % emojis.length];
     el.style.left = left + '%';
-    el.style.setProperty('--dur', (7 + Math.random() * 5) + 's');
-    el.style.setProperty('--delay', (Math.random() * 6) + 's');
+    // Faster: 3–5s range (was 7–12s)
+    el.style.setProperty('--dur', (3 + Math.random() * 2) + 's');
+    el.style.setProperty('--delay', (Math.random() * 4) + 's');
     container.appendChild(el);
   });
 })();
@@ -104,6 +105,7 @@ const FX = {};
     btn.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music');
   });
 })();
+
 
 // =========================================
 // Confetti Engine
@@ -159,54 +161,22 @@ FX.launchConfetti = function launchConfetti(canvas, x, y, count = 150) {
 }
 
 // =========================================
-// Gift Box Interaction
+// Photo Strip — pause on hover/touch, lightbox on click
 // =========================================
-(function initGiftBox() {
-  const giftBox = document.getElementById('gift-box');
-  const lid = document.getElementById('gift-lid');
-  const canvas = document.getElementById('confetti-canvas');
-  const hiddenSections = document.querySelectorAll('.hidden-section');
-  let opened = false;
+(function initCarousel() {
+  const track = document.getElementById('carousel-track');
+  if (!track) return;
 
-  function openGift() {
-    if (opened) return;
-    opened = true;
+  // Touch: pause while finger is down, resume on lift
+  track.addEventListener('touchstart', () => track.classList.add('paused'), { passive: true });
+  track.addEventListener('touchend',   () => track.classList.remove('paused'), { passive: true });
 
-    // Update aria state
-    giftBox.setAttribute('aria-pressed', 'true');
-
-    // 1. Animate lid off
-    lid.classList.add('open');
-
-    // 2. Confetti burst from gift center
-    const rect = document.getElementById('gift-base').getBoundingClientRect();
-    const section = document.getElementById('gift');
-    const sectionRect = section.getBoundingClientRect();
-    FX.launchConfetti(
-      canvas,
-      rect.left - sectionRect.left + rect.width / 2,
-      rect.top - sectionRect.top
-    );
-
-    // 3. Reveal hidden sections with staggered delay
-    hiddenSections.forEach((section, i) => {
-      setTimeout(() => {
-        section.classList.add('revealed');
-      }, 400 + i * 200);
-    });
-
-    // 4. Smooth scroll to photos after all sections have begun revealing
-    setTimeout(() => {
-      document.getElementById('photos')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 1400);
-  }
-
-  giftBox.addEventListener('click', openGift);
-  giftBox.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault(); // prevent Space from scrolling the page
-      openGift();
-    }
+  // Click to open lightbox — only real (non-duplicate) cards
+  track.addEventListener('click', e => {
+    const card = e.target.closest('.photo-card');
+    if (!card || card.getAttribute('aria-hidden') === 'true') return;
+    const src = card.getAttribute('data-src');
+    if (src && window._openLightbox) window._openLightbox(src, card);
   });
 })();
 
@@ -224,7 +194,6 @@ FX.launchConfetti = function launchConfetti(canvas, x, y, count = 150) {
     lightboxImg.src = src;
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
-    // Move focus to close button for screen readers + keyboard users
     setTimeout(() => closeBtn.focus(), 50);
   }
 
@@ -232,33 +201,20 @@ FX.launchConfetti = function launchConfetti(canvas, x, y, count = 150) {
     lightbox.classList.remove('open');
     document.body.style.overflow = '';
     setTimeout(() => { lightboxImg.src = ''; }, 300);
-    // Restore focus to the card that opened the lightbox
     if (lastFocused) lastFocused.focus();
   }
 
-  // Click each photo card
-  document.querySelectorAll('.photo-card').forEach(card => {
-    const activate = (e) => {
-      const src = card.getAttribute('data-src');
-      if (src) openLightbox(src, card);
-    };
-    card.addEventListener('click', activate);
-    card.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        activate(e);
-      }
-    });
-  });
+  // Lightbox open is handled by carousel initCarousel above
+  // Expose openLightbox so carousel can call it
+  window._openLightbox = openLightbox;
 
   closeBtn.addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', e => {
     if (e.target === lightbox) closeLightbox();
   });
-  // Focus trap: keep Tab cycling within the lightbox while open
   lightbox.addEventListener('keydown', e => {
     if (e.key === 'Tab' && lightbox.classList.contains('open')) {
-      e.preventDefault(); // only one focusable element (close btn); keep focus on it
+      e.preventDefault();
       closeBtn.focus();
     }
   });
@@ -434,35 +390,5 @@ FX.launchWishParticles = function launchWishParticles(canvas, wishText) {
   });
 })();
 
-// =========================================
-// Scroll Reveal — fade-in for inner elements
-// =========================================
-(function initScrollReveal() {
-  const revealEls = document.querySelectorAll(
-    '.photo-card, .video-card, .message-card, .section-heading, .section-sub, .wish-description'
-  );
 
-  // Build a stable index map so stagger delay uses DOM order, not per-batch observer order
-  const indexMap = new Map();
-  revealEls.forEach((el, i) => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(28px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    indexMap.set(el, i);
-  });
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const i = indexMap.get(entry.target) ?? 0;
-        setTimeout(() => {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }, i * 80);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-
-  revealEls.forEach(el => observer.observe(el));
-})();
