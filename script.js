@@ -255,6 +255,13 @@ FX.launchConfetti = function launchConfetti(canvas, x, y, count = 150) {
   lightbox.addEventListener('click', e => {
     if (e.target === lightbox) closeLightbox();
   });
+  // Focus trap: keep Tab cycling within the lightbox while open
+  lightbox.addEventListener('keydown', e => {
+    if (e.key === 'Tab' && lightbox.classList.contains('open')) {
+      e.preventDefault(); // only one focusable element (close btn); keep focus on it
+      closeBtn.focus();
+    }
+  });
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
   });

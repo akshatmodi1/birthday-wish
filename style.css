@@ -130,6 +130,7 @@ h1, h2, h3 {
   transition: transform var(--transition), background var(--transition);
 }
 #music-toggle:hover { transform: scale(1.15); background: rgba(255,255,255,0.9); }
+#music-toggle:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 
 /* Sparkle canvas */
 #sparkle-canvas {
@@ -364,6 +365,10 @@ h1, h2, h3 {
   transform: scale(1.03);
   box-shadow: 0 16px 48px rgba(92, 74, 107, 0.18);
 }
+.photo-card:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
 
 .photo-thumb {
   width: 100%;
@@ -434,6 +439,7 @@ h1, h2, h3 {
   transition: background var(--transition);
 }
 #lightbox-close:hover { background: rgba(255,255,255,0.3); }
+#lightbox-close:focus-visible { outline: 3px solid white; outline-offset: 3px; }
 
 /* =========================================
    Video Section
@@ -578,6 +584,7 @@ h1, h2, h3 {
   transition: transform var(--transition);
 }
 #wish-submit:hover { transform: scale(1.05); }
+#wish-submit:focus-visible { outline: 3px solid var(--dark); outline-offset: 3px; }
 
 @keyframes glowPulse {
   0%, 100% { box-shadow: 0 4px 24px rgba(206,147,216,0.4); }
